@@ -1,0 +1,97 @@
+# -*- sh -*-
+#
+#compdef brew
+#
+#
+# ZSH Completion Function for RedHat Brew Build System
+#
+#
+
+typeset -A opt_args
+local context state line
+
+_brew() {
+   local ret=1
+
+   _arguments -C \
+      '1:cmd:->cmds' \
+      '*::arg:->args' \
+      && ret=0
+
+   case "$state" in
+    (cmds)
+      local commands; commands=(
+         'build:Build a package from source'
+         'buildinfo:Print basic information about a build'
+         'cancel:Cancel tasks and/or builds'
+         'chain-build:Build one or more packages from source'
+         'download-build:Download a built package'
+         'help:List available commands'
+         'import-comps:Import group/package information from a comps file'
+         'latest-by-tag:Print the latest packages for each tag'
+         'latest-pkg:Print the latest packages for a tag'
+         'list-api:Print the list of XML-RPC APIs'
+         'list-buildroot:List the rpms used in or built in a buildroot'
+         'list-external-repos:List external repos'
+         'list-groups:Print the group listings'
+         'list-history:Display historical data'
+         'list-hosts:Print the host listing'
+         'list-pkgs:Print the package listing for tag or for owner'
+         'list-tag-history:Print a history of tag operations'
+         'list-tag-inheritance:Print the inheritance information for a tag'
+         'list-tagged:List the builds or rpms in a tag'
+         'list-tags:Print the list of tags'
+         'list-targets:List the build targets'
+         'list-tasks:Print the list of tasks'
+         'list-untagged:List untagged builds'
+         'maven-build:Build a Maven package from source'
+         'mock-config:Create a mock config'
+         'move-pkg:Move one or more packages between tags'
+         'resubmit:Retry a canceled or failed task, using the same parameter as the original task.'
+         'rpminfo:Print basic information about an RPM'
+         'search:Search koji'
+         'show-groups:Show groups data for a tag'
+         'tag-pkg:Apply a tag to one or more packages'
+         'taginfo:Print basic information about a tag'
+         'taskinfo:Show information about a task'
+         'untag-pkg:Remove a tag from one or more packages'
+         'wait-repo:Wait for a repo to be regenerated'
+         'watch-logs:Watch logs in realtime'
+         'watch-task:Track progress of particular tasks'
+         'win-build:Build a Windows package from source'
+      )
+      _describe -t commands 'command' commands && ret=0
+      ;;
+    (args)
+      case $words[1] in
+       (latest-pkg)
+         _arguments -A "-*" \
+            '(--arch --all --quiet --paths --type)--help[show this help message and exit]' \
+            '--arch=-[List all of the latest packages for this arch]' \
+            '--all=-[List all of the latest packages for this tag]' \
+            '--quiet[Do not print the header information]' \
+            '--paths[Show the file paths]' \
+            '--type=-[Show builds of the given type only. Currently supported types: maven]' \
+            '*:tag package [package...]:' \
+            && ret=0
+         ;;
+       (list-tag-inheritance)
+         _arguments -A "-*" \
+            '(--jump --event --ts --repo --reverse)--help[show this help message and exit]' \
+            '--reverse[Process tags children instead of its parents]' \
+            '(--jump --event --ts --repo)--stop=-[Stop processing inheritance at this tag]:Specify tag' \
+            '(--stop --event --ts --repo)--jump=-[Jump from one tag to another when processing inheritance]:Specify tag' \
+            '(--jump --stop --ts --repo)--event=-[query at event]:Specify event' \
+            '(--jump --stop --event --repo)--ts=-[query at timestamp]:Specify timestamp' \
+            '(--jump --stop --ts --event)--repo=-[query at event for a repo]:Specify repository' \
+            '*:tag:' \
+            && ret=0
+         ;;
+      esac
+      ;;
+   esac
+
+  return ret
+}
+
+ _brew "$@"
