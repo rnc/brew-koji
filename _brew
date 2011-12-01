@@ -64,6 +64,72 @@ _brew() {
       ;;
     (args)
       case $words[1] in
+       (build)
+         _arguments -A "-*" \
+            '(--skip-tag --scratch --wait --nowait --quiet --arch\-override --repo\-id --noprogress --background)--help[show this help message and exit]' \
+            '--skip-tag[Do not attempt to tag package]' \
+            '--scratch[Perform a scratch build]' \
+            '--wait[Wait on the build, even if running in the background]' \
+            '--nowait[Dont wait on build]' \
+            '--quiet[Do not print the task information]' \
+            '--arch-override=-[Override build arches]' \
+            '--repo-id=-[Use a specific repo]' \
+            '--noprogress[Do not display progress of the upload]' \
+            '--background[Run the build at a lower priority]' \
+            '*:target URL:' \
+            && ret=0
+         ;;
+       (buildinfo)
+         _arguments -A "-*" \
+            '(--changelog)--help[show this help message and exit]' \
+            '--changelog[Show the changelog for the build]' \
+            '*:<n-v-r> [<n-v-r>...:' \
+            && ret=0
+         ;;
+       (cancel)
+         _arguments -A "-*" \
+            '(--justone --full --force)--help[show this help message and exit]' \
+            '--justone[Do not cancel subtasks]' \
+            '--full[Full cancellation (admin only)]' \
+            '--force[Allow subtasks with --full]' \
+            '*:<task-id|build> [<task-id|build> ...]' \
+            && ret=0
+         ;;
+       (chain-build)
+         _arguments -A "-*" \
+            '(--nowait --noprogress --background)--help[show this help message and exit]' \
+            '--nowait[Dont wait on build]' \
+            '--noprogress[Do not display progress of the upload]' \
+            '--background[Run the build at a lower priority]' \
+            '*:target URL [URL2 [:] URL3 [:] URL4 ...]xs' \
+            && ret=0
+         ;;
+       (download-build)
+         _arguments -A "-*" \
+            '(--arch --type --latestfrom --debuginfo --key --topurl --quiet)--help[show this help message and exit]' \
+            '--arch=-[Only download packages for this arch (may be used]' \
+            '--type=-[Download archives of the given type, rather than rpms]' \
+            '--latestfrom=-[Download the latest build from this tag]' \
+            '--debuginfo[Also download -debuginfo rpms]' \
+            '--key=-[Download rpms signed with the given key]' \
+            '--topurl=-[URL under which Koji files are accessible]' \
+            '--quiet[Do not display progress meter]' \
+            '*:<n-v-r | build_id | package>' \
+            && ret=0
+         ;;
+       (help)
+         _arguments -A "-*" \
+            '--help[show this help message and exit]' \
+            '--admin[show admin commands]' \
+            && ret=0
+         ;;
+       (import-comps)
+         _arguments -A "-*" \
+            '(--force)--help[show this help message and exit]' \
+            '--force[force import]' \
+            '*:file tag' \
+            && ret=0
+         ;;
        (latest-pkg)
          _arguments -A "-*" \
             '(--arch --all --quiet --paths --type)--help[show this help message and exit]' \
@@ -84,7 +150,153 @@ _brew() {
             '(--jump --stop --ts --repo)--event=-[query at event]:Specify event' \
             '(--jump --stop --event --repo)--ts=-[query at timestamp]:Specify timestamp' \
             '(--jump --stop --ts --event)--repo=-[query at event for a repo]:Specify repository' \
-            '*:tag:' \
+            '*:<tag>:' \
+            && ret=0
+         ;;
+       (mock-config)
+         _arguments -A "-*" \
+            '(--arch --tag --task --buildroot --mockdir --topdir --topurl --distribution -o)--help[show this help message and exit]' \
+            '--arch=-[Specify the arch]' \
+            '--tag=-[Create a mock config for a tag]' \
+            '--task=-[Duplicate the mock config of a previous task]' \
+            '--buildroot=-[Duplicate the mock config for the specified buildroot]' \
+            '--mockdir=-[Specify mockdir]' \
+            '--topdir=-[Specify topdir]' \
+            '--topurl=-[url under which Koji files are accessible]' \
+            '--distribution=-[Change the distribution macro]' \
+            '-o+[Output to a file]:Filename' \
+            '*:name:' \
+            && ret=0
+         ;;
+       (move-pkg)
+         _arguments -A "-*" \
+            '(--force --nowait --quiet)--help[show this help message and exit]' \
+            '--force[force operation]' \
+            '--nowait[do not wait on tasks]' \
+            '--all[move all instances of a package, <pkg>s are package names]' \
+            '*:<tag1> <tag2> <pkg> [<pkg>...]:' \
+            && ret=0
+         ;;
+       (resubmit)
+         _arguments -A "-*" \
+            '(--nowait --nowatch --quiet)--help[show this help message and exit]' \
+            '--nowait[Dont wait on task]' \
+            '--nowatch[An alias for --nowait]' \
+            '--quiet[Do not print the task information]' \
+            '*:<taskID>:' \
+            && ret=0
+         ;;
+       (rpminfo)
+         _arguments -A "-*" \
+            '*:<n-v-r.a> [<n-v-r.a>...]:' \
+            && ret=0
+         ;;
+       (search)
+         _arguments -A "-*" \
+            '(--regex --exact)--help[show this help message and exit]' \
+            '--regex[treat pattern as regex]' \
+            '--exact[exact matches only]' \
+            '*:search_type pattern (where search_type is one of package, build, tag, target, user, host, rpm):' \
+            && ret=0
+         ;;
+       (show-groups)
+         _arguments -A "-*" \
+            '(--comps --expand --spec)--help[show this help message and exit]' \
+            '--comps[Print in comps format]' \
+            '--expand[Expand groups in comps format]' \
+            '--spec[Print build spec]' \
+            '*:<tag>:' \
+            && ret=0
+         ;;
+       (tag-pkg)
+         _arguments -A "-*" \
+            '(--force --nowait)--help[show this help message and exit]' \
+            '--force[force operation]' \
+            '--nowait[Do not wait on task]' \
+            '*:<tag> <pkg> [<pkg>...]:' \
+            && ret=0
+         ;;
+       (taginfo)
+         _arguments -A "-*" \
+            '*:<tag> [<tag>...]:' \
+            && ret=0
+         ;;
+       (taskinfo)
+         _arguments -A "-*" \
+            '(--recurse --verbose)--help[show this help message and exit]' \
+            '--recurse[Show children of this task as well]' \
+            '--verbose[Be verbose]' \
+            '*:taskID [taskID...]:' \
+            && ret=0
+         ;;
+       (untag-pkg)
+         _arguments -A "-*" \
+            '(--all --non\-latest --test --verbose --force)--help[show this help message and exit]' \
+            '--all[untag all versions of the package in this tag]' \
+            '--non-latest[untag all versions of the package in this tag except the]' \
+            '--test[test mode]' \
+            '--verbose[print details]' \
+            '--force[force operation]' \
+            '*:<tag> <pkg> [<pkg>...]:' \
+            && ret=0
+         ;;
+       (wait-repo)
+         _arguments -A "-*" \
+            '(--build --target --timeout --quiet)--help[show this help message and exit]' \
+            '--build=-[Check that the given build (or a later build of the same]' \
+            '--target[Interpret the argument as a build target name]' \
+            '--timeout=-[Amount of time to wait (in minutes) before giving up]' \
+            '--quiet[Suppress output, success or failure will be indicated by]' \
+            '*:<tag>:' \
+            && ret=0
+         ;;
+       (watch-logs)
+         _arguments -A "-*" \
+            '(--log)--help[show this help message and exit]' \
+            '--log=-[Watch only a specific log]' \
+            '*:<task id> [<task id>...]:' \
+            && ret=0
+         ;;
+       (watch-task)
+         _arguments -A "-*" \
+            '(--quiet)--help[show this help message and exit]' \
+            '--quiet[Do not print the task information]' \
+            '*:<task id> [<task id>...]:' \
+            && ret=0
+         ;;
+       (win-build)
+         _arguments -A "-*" \
+            '(--winspec --patches --cpus --mem --specfile --scratch --repo-id --skip-tag --background --wait --nowait --quiet)--help[show this help message and exit]' \
+            '--winspec=-[SCM URL to retrieve the build descriptor from. If not]' \
+            '--patches=-[SCM URL of a directory containing patches to apply to the]' \
+            '--cpus=-[Number of cpus to allocate to the build VM (requires]' \
+            '--mem=-[Amount of memory (in megabytes) to allocate to the build]' \
+            '--specfile=-[SCM URL of a spec file fragment to use to generate]' \
+            '--scratch[Perform a scratch build]' \
+            '--repo-id=-[Use a specific repo]' \
+            '--skip-tag[Do not attempt to tag package]' \
+            '--background[Run the build at a lower priority]' \
+            '--wait[Wait on the build, even if running in the background]' \
+            '--nowait[Dont wait on build]' \
+            '--quiet[Do not print the task information]' \
+            '*:target URL VM:' \
+            && ret=0
+         ;;
+       (wrapper-rpm)
+         _arguments -A "-*" \
+            '(--scratch --nowait --background)--help[show this help message and exit]' \
+            '--scratch[Perform a scratch build]' \
+            '--nowait[Dont wait on build]' \
+            '--background[Run the build at a lower priority]' \
+            '*:<signature-key> n-v-r [n-v-r...]:' \
+            && ret=0
+         ;;
+       (write-signed-rpm)
+         _arguments -A "-*" \
+            '(--all --buildid)--help[show this help message and exit]' \
+            '--all[Write out all RPMs signed with this key]' \
+            '--buildid=-[Specify a build id rather than an n-v-r]' \
+            '*:<signature-key> n-v-r [n-v-r...]:' \
             && ret=0
          ;;
       esac
