@@ -1,16 +1,14 @@
-# -*- sh -*-
-#
-#compdef brew
+#compdef brew koji=brew
 #
 #
-# ZSH Completion Function for RedHat Brew Build System
+# ZSH Completion Function for Fedora/RedHat Koji/Brew Build System
 #
 #
 
-typeset -A opt_args
-local context state line
+_brew-koji() {
+   typeset -A opt_args
+   local curcontext="$curcontext" context state line
 
-_brew() {
    local ret=1
 
    _arguments -C \
@@ -151,6 +149,24 @@ _brew() {
             '(--jump --stop --event --repo)--ts=-[query at timestamp]:Specify timestamp' \
             '(--jump --stop --ts --event)--repo=-[query at event for a repo]:Specify repository' \
             '*:<tag>:' \
+            && ret=0
+         ;;
+       (maven-build)
+         _arguments -s -A "-*" \
+            '(--patches --profile --jvm-option --maven-option --debug --specfile --skip\-tag --scratch --nowait --noprogress --background)--help[show this help message and exit]' \
+            '--patches=-[SCM URL of a directory containing patches to apply to the sources before building]:URL' \
+            {-P,--profile=-}'[Enable a profile for the Maven build]:Profile name' \
+            {-D,--property=-}'[Pass a system property to the Maven build]:<name>=<value>' \
+            {-J,--jvm-option=-}'[Pass a command-line option to the JVM]:JVM Option' \
+            {-M,--maven-option=-}'[Pass a command-line option to Maven]:Maven Option' \
+            '--debug[Run Maven build in debug mode]' \
+            '--specfile=-[SCM URL of a spec file fragment to use to generate]' \
+            '--skip-tag[Do not attempt to tag package]' \
+            '--scratch[Perform a scratch build]' \
+            '--nowait[Dont wait on build]' \
+            '--noprogress[Do not display progress of the upload]' \
+            '--background[Run the build at a lower priority]' \
+            '*:target URL:' \
             && ret=0
          ;;
        (mock-config)
@@ -306,4 +322,8 @@ _brew() {
   return ret
 }
 
- _brew "$@"
+ _brew-koji "$@"
+
+ # Local Variables:
+ # mode: sh
+ # End:
