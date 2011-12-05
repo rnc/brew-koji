@@ -7,11 +7,10 @@
 
 _brew()
 {
-   local cur prev commands
+   local cur options commands 
 
    COMPREPLY=()
    cur="${COMP_WORDS[COMP_CWORD]}"
-   prev="${COMP_WORDS[COMP_CWORD-1]}"
 
    commands="add-external-repo add-group add-group-pkg add-group-req add-host add-host-to-channel add-pkg add-tag add-tag-inheritance add-target add-user add-volume block-group-pkg block-group-req block-pkg build buildinfo call cancel chain-build clone-tag disable-host disable-user download-build edit-external-repo edit-host edit-tag edit-tag-inheritance edit-target enable-host enable-user free-task grant-permission help import import-archive import-comps import-in-place import-sig latest-by-tag latest-pkg list-api list-buildroot list-external-repos list-groups list-history list-hosts list-permissions list-pkgs list-signed list-tag-history list-tag-inheritance list-tagged list-tags list-targets list-tasks list-untagged list-volumes lock-tag make-task maven-build mock-config move-pkg prune-signed-copies regen-repo remove-channel remove-external-repo remove-host-from-channel remove-tag remove-tag-inheritance remove-target rename-channel restart-hosts resubmit revoke-permission rpminfo runroot search set-build-volume set-pkg-arches set-pkg-owner set-pkg-owner-global set-task-priority show-groups spin-appliance spin-livecd tag-pkg taginfo taskinfo unblock-group-pkg unblock-group-req unblock-pkg unlock-tag untag-pkg wait-repo watch-logs watch-task win-build wrapper-rpm write-signed-rpm"
 
@@ -20,7 +19,312 @@ _brew()
       return 0
    fi
 
-   # Should now give individual options for each command.
+   case ${COMP_WORDS[1]} in
+   add-external-repo)
+      options="-h --help -t --tag= -p --priority="
+      ;;
+   add-group)
+      options="-h --help"
+      ;;
+   add-group-pkg)
+      options="-h --help"
+      ;;
+   add-group-req)
+      options="-h --help"
+      ;;
+   add-host)
+      options="-h --help --krb-principal="
+      ;;
+   add-host-to-channel)
+      options="-h --help --list --new"
+      ;;
+   add-pkg)
+      options="-h --help --force --owner= --extra-arches="
+      ;;
+   add-tag)
+      options="-h --help --parent= --arches= --maven-support --include-all"
+      ;;
+   add-tag-inheritance)
+      options="-h --help --priority= --maxdepth= --intransitive --noconfig --pkg-filter= --force="
+      ;;
+   add-target)
+      options="-h --help"
+      ;;
+   add-user)
+      options="-h --help --principal= --disable"
+      ;;
+   add-volume)
+      options="-h --help"
+      ;;
+   block-group-pkg)
+      options="-h --help"
+      ;;
+   block-group-req)
+      options="-h --help"
+      ;;
+   block-pkg)
+      options="-h --help"
+      ;;
+   build)
+      options="-h --help --skip-tag --scratch --wait --nowait --quiet --arch-override= --repo-id= --noprogress --background"
+      ;;
+   buildinfo)
+      options="-h --help --changelog"
+      ;;
+   call)
+      options="-h --help --python --kwargs= --python"
+      ;;
+   cancel)
+      options="-h --help --justone --full --force"
+      ;;
+   chain-build)
+      options="-h --help --nowait --noprogress --background"
+      ;;
+   clone-tag)
+      options="-h --help -v --verbose -f --force -n --test"
+      ;;
+   disable-host)
+      options="-h --help --comment="
+      ;;
+   disable-user)
+      options="-h --help"
+      ;;
+   download-build)
+      options="-h --help --arch= --type= --latestfrom= --debuginfo --key= --topurl= -q --quiet"
+      ;;
+   edit-external-repo)
+      options="-h --help --url= --name="
+      ;;
+   edit-host)
+      options="-h --help --arches= --capacity= --description= --comment="
+      ;;
+   edit-tag)
+      options="-h --help --arches= --perm= --no-perm --lock --unlock --rename= --maven-support --no-maven-support --include-all --no-include-all"
+      ;;
+   edit-tag-inheritance)
+      options="-h --help --priority= --maxdepth= --intransitive --noconfig --pkg-filter="
+      ;;
+   edit-target)
+      options="-h --help --rename= --build-tag= --dest-tag="
+      ;;
+   enable-host)
+      options="-h --help --comment="
+      ;;
+   enable-user)
+      options="-h --help"
+      ;;
+   free-task)
+      options="-h --help"
+      ;;
+   grant-permission)
+      options="-h --help"
+      ;;
+   help)
+      options="-h --help --admin"
+      ;;
+   import)
+      options="-h --help --link --test --create-build --src-epoch="
+      ;;
+   import-archive)
+      options="-h --help --noprogress --create-build --type= --type-info="
+      ;;
+   import-comps)
+      options="-h --help --force"
+      ;;
+   import-in-place)
+      options="-h --help"
+      ;;
+   import-sig)
+      options="-h --help --with-unsigned --test"
+      ;;
+   latest-by-tag)
+      options="-h --help --quiet --paths"
+      ;;
+   latest-pkg)
+      options="-h --help --arch= --all --quiet --paths --type="
+      ;;
+   list-api)
+      options="-h --help"
+      ;;
+   list-buildroot)
+      options="-h --help --paths --built -v --verbose"
+      ;;
+   list-external-repos)
+      options="-h --help --url= --name= --id= --tag= --used --inherit --event= --ts= --repo= --quiet"
+      ;;
+   list-groups)
+      options="-h --help"
+      ;;
+   list-history)
+      options="-h --help --debug --build= --package= --tag= --editor= --by= --user= --permission= --external-repo= --erepo= --build-target= --target= --group= --before= --after= --before-event= --after-event= --context -s --show= -v --verbose -e --events --all"
+      ;;
+   list-hosts)
+      options="-h --help --arch= --channel= --ready --not-ready --enabled --not-enabled --quiet"
+      ;;
+   list-permissions)
+      options="-h --help --user= --mine"
+      ;;
+   list-pkgs)
+      options="-h --help --owner= --tag= --package= --quiet --noinherit --show-blocked --show-dups --event= --ts= --repo="
+      ;;
+   list-signed)
+      options="-h --help --debug --key= --build= --rpm= --tag="
+      ;;
+   list-tag-history)
+      options="-h --help --debug --build= --package= --tag= --all"
+      ;;
+   list-tag-inheritance)
+      options="-h --help --reverse --stop= --jump= --event= --ts= --repo="
+      ;;
+   list-tagged)
+      options="-h --help --arch= --rpms --inherit --latest --quiet --paths --sigs --type= --event= --ts= --repo="
+      ;;
+   list-tags)
+      options="-h --help --show-id --verbose --unlocked --build= --package="
+      ;;
+   list-targets)
+      options="-h --help --name= --quiet"
+      ;;
+   list-tasks)
+      options="-h --help --mine --quiet"
+      ;;
+   list-untagged)
+      options="-h --help --paths --show-references"
+      ;;
+   list-volumes)
+      options="-h --help"
+      ;;
+   lock-tag)
+      options="-h --help --perm= --glob --master -n --test"
+      ;;
+   make-task)
+      options="-h --help --channel= --priority= --watch --arch="
+      ;;
+   maven-build)
+      options="-h --help --patches= -G --goal= -P --profile= -D --property= -E --env= -p --package= -J --jvm-option= -M --maven-option= --debug --specfile= --skip-tag --scratch --nowait --noprogress --background"
+      ;;
+   mock-config)
+      options="-h --help --arch= --tag= --task= --buildroot= --mockdir= --topdir= --topurl= --distribution= -o"
+      ;;
+   move-pkg)
+      options="-h --help --force --nowait --all"
+      ;;
+   prune-signed-copies)
+      options="-h --help -n --test -v --verbose --days= -p --package= --pkg= -b --build= -i --ignore-tag= --ignore-tag-file= -r --protect-tag= --protect-tag-file= --trashcan-tag= --debug"
+      ;;
+   regen-repo)
+      options="-h --help --target --nowait"
+      ;;
+   remove-channel)
+      options="-h --help --force"
+      ;;
+   remove-external-repo)
+      options="-h --help --alltags --force"
+      ;;
+   remove-host-from-channel)
+      options="-h --help"
+      ;;
+   remove-tag)
+      options="-h --help"
+      ;;
+   remove-tag-inheritance)
+      options="-h --help"
+      ;;
+   remove-target)
+      options="-h --help"
+      ;;
+   rename-channel)
+      options="-h --help"
+      ;;
+   restart-hosts)
+      options="-h --help --wait --nowait --quiet"
+      ;;
+   resubmit)
+      options="-h --help --nowait --nowatch --quiet"
+      ;;
+   revoke-permission)
+      options="-h --help"
+      ;;
+   rpminfo)
+      options="-h --help --buildroots"
+      ;;
+   runroot)
+      options="-h --help -p --package= -m --mount= --keep --skip-setarch -w --weight= --channel-override= --task-id --use-shell --repo-id="
+      ;;
+   search)
+      options="-h --help -r --regex --exact"
+      ;;
+   set-build-volume)
+      options="-h --help -v --verbose"
+      ;;
+   set-pkg-arches)
+      options="-h --help --force"
+      ;;
+   set-pkg-owner)
+      options="-h --help --force"
+      ;;
+   set-pkg-owner-global)
+      options="-h --help --verbose --test --old-user= --from="
+      ;;
+   set-task-priority)
+      options="-h --help --priority= --recurse"
+      ;;
+   show-groups)
+      options="-h --help --comps -x --expand --spec"
+      ;;
+   spin-appliance)
+      options="-h --help --wait --nowait --noprogress --background --ksurl= --ksversion= --scratch --repo= --name= --version= --release= --vmem= --vcpu= --format="
+      ;;
+   spin-livecd)
+      options="-h --help --wait --nowait --noprogress --background --isoname= --ksurl= --ksversion= --scratch --repo="
+      ;;
+   tag-pkg)
+      options="-h --help --force --nowait"
+      ;;
+   taginfo)
+      options="-h --help"
+      ;;
+   taskinfo)
+      options="-h --help -r --recurse -v --verbose"
+      ;;
+   unblock-group-pkg)
+      options="-h --help"
+      ;;
+   unblock-group-req)
+      options="-h --help"
+      ;;
+   unblock-pkg)
+      options="-h --help"
+      ;;
+   unlock-tag)
+      options="-h --help --glob -n --test"
+      ;;
+   untag-pkg)
+      options="-h --help --all --non-latest -n --test -v --verbose --force"
+      ;;
+   wait-repo)
+      options="-h --help --build= --target --timeout= --quiet"
+      ;;
+   watch-logs)
+      options="-h --help --log="
+      ;;
+   watch-task)
+      options="-h --help --quiet"
+      ;;
+   win-build)
+      options="-h --help --winspec= --patches= --cpus= --mem= --specfile= --scratch --repo-id= --skip-tag --background --wait --nowait --quiet"
+      ;;
+   wrapper-rpm)
+      options="-h --help --scratch --nowait --background"
+      ;;
+   write-signed-rpm)
+      options="-h --help --all --buildid="
+      ;;
+   *)
+      ;;
+   esac
+   COMPREPLY=( $(compgen -W "${options}" -- ${cur}) )
+   return 0
 }
 complete -F _brew brew koji
 
