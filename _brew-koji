@@ -128,6 +128,14 @@ _brew-koji() {
             '*:file tag' \
             && ret=0
          ;;
+       (latest-by-tag)
+         _arguments -A "-*" \
+            '(----quiet --paths)--help[show this help message and exit]' \
+            '--quiet[Do not print the header information]' \
+            '--paths[Show the file paths]' \
+            '*:tag package [package...]:' \
+            && ret=0
+         ;;
        (latest-pkg)
          _arguments -A "-*" \
             '(--arch --all --quiet --paths --type)--help[show this help message and exit]' \
@@ -139,6 +147,93 @@ _brew-koji() {
             '*:tag package [package...]:' \
             && ret=0
          ;;
+       # list-api - no arguments.
+       (list-buildroot)
+         _arguments -A "-*" \
+            '(--paths --built)--help[show this help message and exit]' \
+            '--paths[Show the file paths]' \
+            '--built=-[Show the built rpms]' \
+            '*:buildroot-id:' \
+            && ret=0
+         ;;
+       (list-external-repos)
+         _arguments -A "-*" \
+            '(--url --event --ts --repo --name --id --tag --used --inherit)--help[show this help message and exit]' \
+            '(--name --id --tag)--url=-[Select by url]' \
+            '(--url --id --tag)--name=-[Select by name]' \
+            '(--url --name --tag--id=-[Select by id]' \
+            '(--url --name --id)--tag=-[Select by tag]' \
+            '--used[List which tags use the repo(s)]' \
+            '--inherit[Follow tag inheritance when selecting by tag]' \
+            '(--ts --repo)--event=-[query at event]:Specify event' \
+            '(--event --repo)--ts=-[query at timestamp]:Specify timestamp' \
+            '(--ts --event)--repo=-[query at event corresponding to (nonexternal) repo]:Specify repository' \
+            '--quiet[Do not display the column headers]' \
+            && ret=0
+         ;;
+       # list-groups - no arguments
+       (list-history)
+         _arguments -A "-*" \
+            (--debug --build --package --tag --editor --user --permision --external --build\-target --group --before --after --before\-event --after\-event --context --show --verbose --all){-h,--help}'[show this help message and exit]' \
+            '--debug' \
+            '--build=-[Only show data for a specific build]' \
+            '--package=-[Only show data for a specific package]' \
+            '--tag=-[Only show data for a specific tag]' \
+            {--editor=-,--by=-}'[Only show entries modified by user]' \
+            '--user=-[Only show entries affecting a user]' \
+            '--permission=-[Only show entries relating to a given permission]' \
+            {--erepo,--external-repo=-}'[External repo]' \
+            {--build-target=-,--target=-}'[Only show entries relating to a given build target]' \
+            '--group=-[Only show entries relating to a given group]' \
+            '--before=-[Only show entries before timestamp]' \
+            '--after=-[Only show entries after timestamp]' \
+            '--before-event=-[Only show entries before event]' \
+            '--after-event=[Only show entries after event]' \
+            '--context[Show related entries]' \
+            {-s ,--show=-}'[Show data from selected tables]' \
+            {-v,--verbose}'[Show more detail]' \
+            {-e,--events}'[Show event ids]' \
+            '--all[Allows listing the entire global history]' \
+            && ret=0
+            ;;
+       (list-hosts)
+         _arguments -A "-*" \
+            (--arch --channel--ready --not\-ready --enabled --not\-enabled --quiet){-h, --help}'[show this help message and exit]' \
+            '--arch=-[Specify an architecture]' \
+            '--channel=-[Specify a channel]' \
+            '--ready[Limit to ready hosts]' \
+            '--not-ready[Limit to not ready hosts]' \
+            '--enabled[Limit to enabled hosts]' \
+            '--not-enabled[Limit to not enabled hosts]' \
+            '--quiet[Do not print header information]' \
+            && ret=0
+            ;;
+       (list-pkgs)
+         _arguments -A "-*" \
+            (--owner --tag --package --quiet --noinherit --show\-blocked --show\-dups --event --ts --repo){-h, --help}'[show this help message and exit]' \
+            '--owner=-[Specify owner]' \
+            '--tag=-[Specify tag]' \
+            '--package=-[Specify package]' \
+            '--quiet[Do not print header information]' \
+            '--noinherit[Dont follow inheritance]' \
+            '--show-blocked[Show blocked packages]' \
+            '--show-dups[Show superseded owners]' \
+            '--event=-[query at event]' \
+            '--ts=-[query at timestamp]' \
+            '--repo=-[query at event for a repo]' \
+            && ret=0
+            ;;
+       (list-tag-history)
+         _arguments -A "-*" \
+            (--debug --build --package --tag --all){-h, --help}'[show this help message and exit]' \
+            '--debug' \
+            '--build=-[Only show data for a specific build]' \
+            '--package=-[Only show data for a specific package]' \
+            '--tag=-[Only show data for a specific tag]' \
+            '--all[Allows listing the entire global history]' \
+            && ret=0
+            ;;
+
        (list-tag-inheritance)
          _arguments -A "-*" \
             '(--jump --event --ts --repo --reverse)--help[show this help message and exit]' \
@@ -149,6 +244,54 @@ _brew-koji() {
             '(--jump --stop --event --repo)--ts=-[query at timestamp]:Specify timestamp' \
             '(--jump --stop --ts --event)--repo=-[query at event for a repo]:Specify repository' \
             '*:<tag>:' \
+            && ret=0
+         ;;
+       (list-tagged)
+         _arguments -A "-*" \
+            '(--arch --rpms --inherit --latest --latest --quiet --path --sigs --type --event --ts --repo)--help[show this help message and exit]' \
+            '--arch=-[List rpms for this arch]' \
+            '--rpms[Show rpms instead of builds]' \
+            '--inherit[Follow inheritance]' \
+            '--latest[Only show the latest builds/rpms]' \
+            '--quiet[Do not print the header information]' \
+            '--paths[Show the file paths]' \
+            '--sigs[Show signatures]' \
+            '--type=-Show builds of the given type only.[Currently supported]' \
+            '--event=-[query at event]' \
+            '--ts=-[query at timestamp]' \
+            '--repo=-[query at event for a repo]' \
+             '*:tag package:' \
+           && ret=0
+         ;;
+       (list-tags)
+         _arguments -A "-*" \
+            (--show\-id --verbose --unlocked --build --package){-h, --help}'[show this help message and exit]' \
+            '--show-id[Show tag ids]' \
+            '--verbose[Show more information]' \
+            '--unlocked[Only show unlocked tags]' \
+            '--build=-[Show tags associated with a build]' \
+            '--package=-[Show tags associated with a package]' \
+            && ret=0
+         ;;
+       (list-targets)
+         _arguments -A "-*" \
+            (--name --quiet){-h,--help}'[show this help message and exit]' \
+            '--name=-[Specify the build target name]' \
+            '--quiet[Do not print the header information]' \
+            && ret=0
+         ;;
+       (list-tasks)
+         _arguments -A "-*" \
+            (--mine --quiet){-h,--help}'[show this help message and exit]' \
+            '--mine[Just print your tasks]' \
+            '--quiet[Do not display the column headers]' \
+         && ret=0
+         ;;
+       (list-untagged)
+         _arguments -A "-*" \
+            (--paths --show\-references){-h,--help}'[show this help message and exit]' \
+            '--paths[Show the file paths]' \
+            '--show-references[Show build references]' \
             && ret=0
          ;;
        (maven-build)
