@@ -1,0 +1,30 @@
+#
+#
+# Bash Completion Function for Fedora/RedHat Koji/Brew Build System
+#
+#
+
+
+_brew()
+{
+   local cur prev commands
+
+   COMPREPLY=()
+   cur="${COMP_WORDS[COMP_CWORD]}"
+   prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+   commands="build buildinfo cancel chain-build download-build help import-comps latest-by-tag latest-pkg list-api list-buildroot list-external-repos list-groups list-history list-hosts list-pkgs list-tag-history list-tag-inheritance list-tagged list-tags list-targets list-tasks list-untagged maven-build mock-config move-pkg resubmit rpminfo search show-groups tag-pkg taginfo taskinfo untag-pkg wait-repo watch-logs watch-task win-build"
+
+   if [[ ${COMP_CWORD} -eq 1 ]] ; then
+      COMPREPLY=($(compgen -W "${commands}" -- ${cur}))
+      return 0
+   fi
+
+   # Should now give individual options for each command.
+}
+complete -F _brew brew koji
+
+
+# Local Variables:
+# mode: sh
+# End:
