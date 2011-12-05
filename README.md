@@ -5,8 +5,7 @@ Shell Completion System for the RedHat Brew/Koji Build Systems
 
 Current Status
 --------------
-Basic version for bash has been implemented.
-ZSH version is more comprehensive.
+Both bash and zsh are supported.
 
 
 Installation
