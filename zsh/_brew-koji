@@ -19,6 +19,7 @@ _brew-koji() {
    case "$state" in
     (cmds)
       local commands; commands=(
+         'add-pkg:Add a package to the listing for tag'
          'build:Build a package from source'
          'buildinfo:Print basic information about a build'
          'cancel:Cancel tasks and/or builds'
@@ -62,9 +63,19 @@ _brew-koji() {
       ;;
     (args)
       case $words[1] in
+       (add-pkg)
+         _arguments -A "-*" \
+            '(--owner --force --extra-arches)'{-h,--help}'[show this help message and exit]' \
+            '--owner=-[Specify owner]' \
+            '--tag=-[Specify tag]' \
+            '--extra-arches=-[Specify extra arches]' \
+            '--force[Override blocks if neccessary]' \
+            '*:tag package [package...]:' \
+            && ret=0
+            ;;
        (build)
          _arguments -A "-*" \
-            '(--skip-tag --scratch --wait --nowait --quiet --arch\-override --repo\-id --noprogress --background)--help[show this help message and exit]' \
+            '(--skip-tag --scratch --wait --nowait --quiet --arch\-override --repo\-id --noprogress --background)'{-h,--help}'[show this help message and exit]' \
             '--skip-tag[Do not attempt to tag package]' \
             '--scratch[Perform a scratch build]' \
             '--wait[Wait on the build, even if running in the background]' \
@@ -174,7 +185,7 @@ _brew-koji() {
        # list-groups - no arguments
        (list-history)
          _arguments -A "-*" \
-            (--debug --build --package --tag --editor --user --permision --external --build\-target --group --before --after --before\-event --after\-event --context --show --verbose --all){-h,--help}'[show this help message and exit]' \
+            '(--debug --build --package --tag --editor --user --permision --external --build\-target --group --before --after --before\-event --after\-event --context --show --verbose --all)'{-h, --help}'[show this help message and exit]' \
             '--debug' \
             '--build=-[Only show data for a specific build]' \
             '--package=-[Only show data for a specific package]' \
@@ -198,7 +209,7 @@ _brew-koji() {
             ;;
        (list-hosts)
          _arguments -A "-*" \
-            (--arch --channel--ready --not\-ready --enabled --not\-enabled --quiet){-h, --help}'[show this help message and exit]' \
+            '(--arch --channel--ready --not\-ready --enabled --not\-enabled --quiet)'{-h, --help}'[show this help message and exit]' \
             '--arch=-[Specify an architecture]' \
             '--channel=-[Specify a channel]' \
             '--ready[Limit to ready hosts]' \
@@ -210,7 +221,7 @@ _brew-koji() {
             ;;
        (list-pkgs)
          _arguments -A "-*" \
-            (--owner --tag --package --quiet --noinherit --show\-blocked --show\-dups --event --ts --repo){-h, --help}'[show this help message and exit]' \
+            '(--owner --tag --package --quiet --noinherit --show\-blocked --show\-dups --event --ts --repo)'{-h,--help}'[show this help message and exit]' \
             '--owner=-[Specify owner]' \
             '--tag=-[Specify tag]' \
             '--package=-[Specify package]' \
@@ -225,7 +236,7 @@ _brew-koji() {
             ;;
        (list-tag-history)
          _arguments -A "-*" \
-            (--debug --build --package --tag --all){-h, --help}'[show this help message and exit]' \
+            '(--debug --build --package --tag --all)'{-h, --help}'[show this help message and exit]' \
             '--debug' \
             '--build=-[Only show data for a specific build]' \
             '--package=-[Only show data for a specific package]' \
@@ -265,7 +276,7 @@ _brew-koji() {
          ;;
        (list-tags)
          _arguments -A "-*" \
-            (--show\-id --verbose --unlocked --build --package){-h, --help}'[show this help message and exit]' \
+            '(--show\-id --verbose --unlocked --build --package)'{-h,--help}'[show this help message and exit]' \
             '--show-id[Show tag ids]' \
             '--verbose[Show more information]' \
             '--unlocked[Only show unlocked tags]' \
@@ -275,28 +286,28 @@ _brew-koji() {
          ;;
        (list-targets)
          _arguments -A "-*" \
-            (--name --quiet){-h,--help}'[show this help message and exit]' \
+            '(--name --quiet)'{-h,--help}'[show this help message and exit]' \
             '--name=-[Specify the build target name]' \
             '--quiet[Do not print the header information]' \
             && ret=0
          ;;
        (list-tasks)
          _arguments -A "-*" \
-            (--mine --quiet){-h,--help}'[show this help message and exit]' \
+            '(--mine --quiet)'{-h,--help}'[show this help message and exit]' \
             '--mine[Just print your tasks]' \
             '--quiet[Do not display the column headers]' \
          && ret=0
          ;;
        (list-untagged)
          _arguments -A "-*" \
-            (--paths --show\-references){-h,--help}'[show this help message and exit]' \
+            '(--paths --show\-references)'{-h,--help}'[show this help message and exit]' \
             '--paths[Show the file paths]' \
             '--show-references[Show build references]' \
             && ret=0
          ;;
        (maven-build)
          _arguments -s -A "-*" \
-            '(--patches --profile --jvm-option --maven-option --debug --specfile --skip\-tag --scratch --nowait --noprogress --background)--help[show this help message and exit]' \
+            (--patches --profile --jvm-option --maven-option --debug --specfile --skip\-tag --scratch --nowait --noprogress --background){--help,-h}'[show this help message and exit]' \
             '--patches=-[SCM URL of a directory containing patches to apply to the sources before building]:URL' \
             {-P,--profile=-}'[Enable a profile for the Maven build]:Profile name' \
             {-D,--property=-}'[Pass a system property to the Maven build]:<name>=<value>' \
