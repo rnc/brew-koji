@@ -185,7 +185,7 @@ _brew-koji() {
        # list-groups - no arguments
        (list-history)
          _arguments -A "-*" \
-            '(--debug --build --package --tag --editor --user --permision --external --build\-target --group --before --after --before\-event --after\-event --context --show --verbose --all)'{-h, --help}'[show this help message and exit]' \
+            '(--debug --build --package --tag --editor --user --permision --external --build\-target --group --before --after --before\-event --after\-event --context --show --verbose --all)'{-h,--help}'[show this help message and exit]' \
             '--debug' \
             '--build=-[Only show data for a specific build]' \
             '--package=-[Only show data for a specific package]' \
@@ -209,7 +209,7 @@ _brew-koji() {
             ;;
        (list-hosts)
          _arguments -A "-*" \
-            '(--arch --channel--ready --not\-ready --enabled --not\-enabled --quiet)'{-h, --help}'[show this help message and exit]' \
+            '(--arch --channel--ready --not\-ready --enabled --not\-enabled --quiet)'{-h,--help}'[show this help message and exit]' \
             '--arch=-[Specify an architecture]' \
             '--channel=-[Specify a channel]' \
             '--ready[Limit to ready hosts]' \
@@ -236,7 +236,7 @@ _brew-koji() {
             ;;
        (list-tag-history)
          _arguments -A "-*" \
-            '(--debug --build --package --tag --all)'{-h, --help}'[show this help message and exit]' \
+            '(--debug --build --package --tag --all)'{-h,--help}'[show this help message and exit]' \
             '--debug' \
             '--build=-[Only show data for a specific build]' \
             '--package=-[Only show data for a specific package]' \
@@ -267,7 +267,7 @@ _brew-koji() {
             '--quiet[Do not print the header information]' \
             '--paths[Show the file paths]' \
             '--sigs[Show signatures]' \
-            '--type=-Show builds of the given type only.[Currently supported]' \
+            '--type=-[Show builds of the given type only. Currently supported types: maven]' \
             '--event=-[query at event]' \
             '--ts=-[query at timestamp]' \
             '--repo=-[query at event for a repo]' \
@@ -403,7 +403,7 @@ _brew-koji() {
          _arguments -A "-*" \
             '(--all --non\-latest --test --verbose --force)--help[show this help message and exit]' \
             '--all[untag all versions of the package in this tag]' \
-            '--non-latest[untag all versions of the package in this tag except the]' \
+            '--non-latest[untag all versions of the package in this tag except the latest]' \
             '--test[test mode]' \
             '--verbose[print details]' \
             '--force[force operation]' \
@@ -413,10 +413,10 @@ _brew-koji() {
        (wait-repo)
          _arguments -A "-*" \
             '(--build --target --timeout --quiet)--help[show this help message and exit]' \
-            '--build=-[Check that the given build (or a later build of the same]' \
+            '--build=-[Check that the given build (or a later build of the same package) is in the newly-generated repo (may be used multiple times)]' \
             '--target[Interpret the argument as a build target name]' \
-            '--timeout=-[Amount of time to wait (in minutes) before giving up]' \
-            '--quiet[Suppress output, success or failure will be indicated by]' \
+            '--timeout=-[Amount of time to wait (in minutes) before giving up (default: 120)]' \
+            '--quiet[Suppress output, success or failure will be indicated by the return value only]' \
             '*:<tag>:' \
             && ret=0
          ;;
