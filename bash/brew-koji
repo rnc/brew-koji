@@ -12,7 +12,7 @@ _brew()
    COMPREPLY=()
    cur="${COMP_WORDS[COMP_CWORD]}"
 
-   commands="add-external-repo add-group add-group-pkg add-group-req add-host add-host-to-channel add-pkg add-tag add-tag-inheritance add-target add-user add-volume block-group-pkg block-group-req block-pkg build buildinfo call cancel chain-build clone-tag disable-host disable-user download-build edit-external-repo edit-host edit-tag edit-tag-inheritance edit-target enable-host enable-user free-task grant-permission help import import-archive import-comps import-in-place import-sig latest-by-tag latest-pkg list-api list-buildroot list-external-repos list-groups list-history list-hosts list-permissions list-pkgs list-signed list-tag-history list-tag-inheritance list-tagged list-tags list-targets list-tasks list-untagged list-volumes lock-tag make-task maven-build mock-config move-pkg prune-signed-copies regen-repo remove-channel remove-external-repo remove-host-from-channel remove-tag remove-tag-inheritance remove-target rename-channel restart-hosts resubmit revoke-permission rpminfo runroot search set-build-volume set-pkg-arches set-pkg-owner set-pkg-owner-global set-task-priority show-groups spin-appliance spin-livecd tag-pkg taginfo taskinfo unblock-group-pkg unblock-group-req unblock-pkg unlock-tag untag-pkg wait-repo watch-logs watch-task win-build wrapper-rpm write-signed-rpm"
+   commands="add-external-repo add-group add-group-pkg add-group-req add-host add-host-to-channel add-pkg add-tag add-tag-inheritance add-target add-user add-volume block-group-pkg block-group-req block-pkg build buildinfo call cancel cancel-task cxl chain-build clone-tag disable-host disable-user download-build download-logs edit-external-repo edit-host edit-tag edit-tag-inheritance edit-target enable-host enable-user free-task grant-permission help image-build import import-archive import-comps import-in-place import-sig latest-build latest-by-tag latest-pkg list-api list-buildroot list-commands list-external-repos list-groups list-history list-hosts list-permissions list-pkgs list-signed list-tag-history list-tag-inheritance list-tagged list-tags list-targets list-tasks list-untagged list-volumes lock-tag make-task maven-build mock-config moshimoshi move move-build move-pkg prune-signed-copies regen-repo remove-channel remove-external-repo remove-host-from-channel remove-pkg remove-tag remove-tag-inheritance remove-target rename-channel restart-hosts resubmit revoke-permission rpminfo runroot search set-build-volume set-pkg-arches set-pkg-owner set-pkg-owner-global set-task-priority show-groups spin-appliance spin-livecd tag tag-build tag-pkg taginfo taskinfo unblock-group-pkg unblock-group-req unblock-pkg unlock-tag untag-build untag-pkg wait-repo watch-logs watch-task win-build wrapper-rpm write-signed-rpm"
 
    if [[ ${COMP_CWORD} -eq 1 ]] ; then
       COMPREPLY=($(compgen -W "${commands}" -- ${cur}))
@@ -74,7 +74,7 @@ _brew()
    call)
       options="-h --help --python --kwargs= --python"
       ;;
-   cancel)
+   cancel|cxl|cancel-task)
       options="-h --help --justone --full --force"
       ;;
    chain-build)
@@ -122,6 +122,9 @@ _brew()
    help)
       options="-h --help --admin"
       ;;
+   image-build)
+      options="-h --help --background --config= --disk-size= --distro= --format= --kickstart= --ksurl= --ksversion= --noprogress --nowait --ova-option= --release --repo= --scratch --skip-tag= --specfile= --wait"
+      ;;
    import)
       options="-h --help --link --test --create-build --src-epoch="
       ;;
@@ -140,7 +143,7 @@ _brew()
    latest-by-tag)
       options="-h --help --quiet --paths"
       ;;
-   latest-pkg)
+   latest-pkg|latest-build)
       options="-h --help --arch= --all --quiet --paths --type="
       ;;
    list-api)
@@ -153,7 +156,7 @@ _brew()
       options="-h --help --url= --name= --id= --tag= --used --inherit --event= --ts= --repo= --quiet"
       ;;
    list-groups)
-      options="-h --help"
+      options="-h --help --event"
       ;;
    list-history)
       options="-h --help --debug --build= --package= --tag= --editor= --by= --user= --permission= --external-repo= --erepo= --build-target= --target= --group= --before= --after= --before-event= --after-event= --context -s --show= -v --verbose -e --events --all"
@@ -206,7 +209,7 @@ _brew()
    mock-config)
       options="-h --help --arch= --tag= --task= --buildroot= --mockdir= --topdir= --topurl= --distribution= -o"
       ;;
-   move-pkg)
+   move-pkg|move|move-build)
       options="-h --help --force --nowait --all"
       ;;
    prune-signed-copies)
@@ -223,6 +226,9 @@ _brew()
       ;;
    remove-host-from-channel)
       options="-h --help"
+      ;;
+   remove-pkg)
+      options="-h --help --force"
       ;;
    remove-tag)
       options="-h --help"
@@ -273,12 +279,12 @@ _brew()
       options="-h --help --comps -x --expand --spec"
       ;;
    spin-appliance)
-      options="-h --help --wait --nowait --noprogress --background --ksurl= --ksversion= --scratch --repo= --name= --version= --release= --vmem= --vcpu= --format="
+      options="-h --help --wait --nowait --noprogress --background --ksurl= --ksversion= --scratch --repo= --release --specfile= --skiptag= --name= --release= --vmem= --vcpu= --format="
       ;;
    spin-livecd)
-      options="-h --help --wait --nowait --noprogress --background --isoname= --ksurl= --ksversion= --scratch --repo="
+      options="-h --help --wait --nowait --noprogress --background --ksurl= --ksversion= --scratch --repo= --release --specfile= --skip-tag="
       ;;
-   tag-pkg)
+   tag-pkg|tag-build)
       options="-h --help --force --nowait"
       ;;
    taginfo)
@@ -299,7 +305,7 @@ _brew()
    unlock-tag)
       options="-h --help --glob -n --test"
       ;;
-   untag-pkg)
+   untag-pkg|untag-build)
       options="-h --help --all --non-latest -n --test -v --verbose --force"
       ;;
    wait-repo)
