@@ -25,10 +25,10 @@ _brew-koji() {
          'cancel:Cancel tasks and/or builds'
          'chain-build:Build one or more packages from source'
          'download-build:Download a built package'
+         'download-logs:Download a logs for package'
          'help:List available commands'
          'import-comps:Import group/package information from a comps file'
-         'latest-by-tag:Print the latest packages for each tag'
-         'latest-pkg:Print the latest packages for a tag'
+         'latest-build:Print the latest packages for each tag'
          'list-api:Print the list of XML-RPC APIs'
          'list-buildroot:List the rpms used in or built in a buildroot'
          'list-external-repos:List external repos'
@@ -44,6 +44,7 @@ _brew-koji() {
          'list-tasks:Print the list of tasks'
          'list-untagged:List untagged builds'
          'maven-build:Build a Maven package from source'
+         'maven-chain:Run a set of Maven builds in dependency order'
          'mock-config:Create a mock config'
          'move-pkg:Move one or more packages between tags'
          'resubmit:Retry a canceled or failed task, using the same parameter as the original task.'
@@ -113,6 +114,17 @@ _brew-koji() {
             '*:target URL [URL2 [:] URL3 [:] URL4 ...]xs' \
             && ret=0
          ;;
+       (download-logs)
+         _arguments -A "-*" \
+            '(--recurse --nvr --match --continue --dir)--help[show this help message and exit]' \
+            '--recurse[Process children of this task as well]' \
+            '--nvr=-[Get logs from n-v-r]' \
+            '*--match=-[Get only log matching PATTERN. May be used multiple times]' \
+            '--continue[Continue previous download]' \
+            '--dir=-[Download to this directory]' \
+            '*:<n-v-r | build_id | package>' \
+            && ret=0
+         ;;
        (download-build)
          _arguments -A "-*" \
             '(--arch --type --latestfrom --debuginfo --key --topurl --quiet)--help[show this help message and exit]' \
@@ -139,11 +151,14 @@ _brew-koji() {
             '*:file tag' \
             && ret=0
          ;;
-       (latest-by-tag)
+       (latest-build)
          _arguments -A "-*" \
-            '(----quiet --paths)--help[show this help message and exit]' \
+            '(--arch --all --quiet --paths --type)--help[show this help message and exit]' \
+            '--arch=-[List all of the latest packages for this arch]' \
+            '--all=-[List all of the latest packages for this tag]' \
             '--quiet[Do not print the header information]' \
             '--paths[Show the file paths]' \
+            '--type=-[Show builds of the given type only. Currently supported types: maven]' \
             '*:tag package [package...]:' \
             && ret=0
          ;;
@@ -323,6 +338,18 @@ _brew-koji() {
             '*:target URL:' \
             && ret=0
          ;;
+       (maven-chain)
+         _arguments -s -A "-*" \
+            (--skip-tag --scratch --debug --force --nowait --background){--help,-h}'[show this help message and exit]' \
+            '--skip-tag[Do not attempt to tag builds]' \
+            '--scratch[Perform a scratch build]' \
+            '--debug[Run Maven build in debug mode]' \
+            '--force[Force rebuilds of all packages]' \
+            '--nowait[Dont wait on build]' \
+            '--background[Run the build at a lower priority]' \
+            '*:target URL:' \
+            && ret=0
+         ;;
        (mock-config)
          _arguments -A "-*" \
             '(--arch --tag --task --buildroot --mockdir --topdir --topurl --distribution -o)--help[show this help message and exit]' \
@@ -338,6 +365,10 @@ _brew-koji() {
             '*:name:' \
             && ret=0
          ;;
+       (moshimoshi)
+         _arguments -A "-*" \
+            '(--help[show this help message and exit]' \
+            && ret=0
        (move-pkg)
          _arguments -A "-*" \
             '(--force --nowait --quiet)--help[show this help message and exit]' \
@@ -386,6 +417,14 @@ _brew-koji() {
             '*:<tag> <pkg> [<pkg>...]:' \
             && ret=0
          ;;
+       (tag-build)
+         _arguments -A "-*" \
+            '(--force --nowait)--help[show this help message and exit]' \
+            '--force[force operation]' \
+            '--nowait[Do not wait on task]' \
+            '*:<tag> <pkg> [<pkg>...]:' \
+            && ret=0
+         ;;
        (taginfo)
          _arguments -A "-*" \
             '*:<tag> [<tag>...]:' \
@@ -397,6 +436,17 @@ _brew-koji() {
             '--recurse[Show children of this task as well]' \
             '--verbose[Be verbose]' \
             '*:taskID [taskID...]:' \
+            && ret=0
+         ;;
+       (untag-build)
+         _arguments -A "-*" \
+            '(--all --non\-latest --test --verbose --force)--help[show this help message and exit]' \
+            '--all[untag all versions of the package in this tag]' \
+            '--non-latest[untag all versions of the package in this tag except the latest]' \
+            '--test[test mode]' \
+            '--verbose[print details]' \
+            '--force[force operation]' \
+            '*:<tag> <pkg> [<pkg>...]:' \
             && ret=0
          ;;
        (untag-pkg)

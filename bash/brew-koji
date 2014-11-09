@@ -7,12 +7,12 @@
 
 _brew()
 {
-   local cur options commands 
+   local cur options commands
 
    COMPREPLY=()
    cur="${COMP_WORDS[COMP_CWORD]}"
 
-   commands="add-external-repo add-group add-group-pkg add-group-req add-host add-host-to-channel add-pkg add-tag add-tag-inheritance add-target add-user add-volume block-group-pkg block-group-req block-pkg build buildinfo call cancel cancel-task cxl chain-build clone-tag disable-host disable-user download-build download-logs edit-external-repo edit-host edit-tag edit-tag-inheritance edit-target enable-host enable-user free-task grant-permission help image-build import import-archive import-comps import-in-place import-sig latest-build latest-by-tag latest-pkg list-api list-buildroot list-commands list-external-repos list-groups list-history list-hosts list-permissions list-pkgs list-signed list-tag-history list-tag-inheritance list-tagged list-tags list-targets list-tasks list-untagged list-volumes lock-tag make-task maven-build mock-config moshimoshi move move-build move-pkg prune-signed-copies regen-repo remove-channel remove-external-repo remove-host-from-channel remove-pkg remove-tag remove-tag-inheritance remove-target rename-channel restart-hosts resubmit revoke-permission rpminfo runroot search set-build-volume set-pkg-arches set-pkg-owner set-pkg-owner-global set-task-priority show-groups spin-appliance spin-livecd tag tag-build tag-pkg taginfo taskinfo unblock-group-pkg unblock-group-req unblock-pkg unlock-tag untag-build untag-pkg wait-repo watch-logs watch-task win-build wrapper-rpm write-signed-rpm"
+   commands="add-external-repo add-group add-group-pkg add-group-req add-host add-host-to-channel add-pkg add-tag add-tag-inheritance add-target add-user add-volume block-group-pkg block-group-req block-pkg build buildinfo call cancel cancel-task cxl chain-build clone-tag disable-host disable-user download-build download-logs edit-external-repo edit-host edit-tag edit-tag-inheritance edit-target enable-host enable-user free-task grant-permission help image-build import import-archive import-comps import-in-place import-sig latest-build latest-by-tag latest-pkg list-api list-buildroot list-commands list-external-repos list-groups list-history list-hosts list-permissions list-pkgs list-signed list-tag-history list-tag-inheritance list-tagged list-tags list-targets list-tasks list-untagged list-volumes lock-tag make-task maven-chain maven-build mock-config moshimoshi move move-build move-pkg prune-signed-copies regen-repo remove-channel remove-external-repo remove-host-from-channel remove-pkg remove-tag remove-tag-inheritance remove-target rename-channel restart-hosts resubmit revoke-permission rpminfo runroot search set-build-volume set-pkg-arches set-pkg-owner set-pkg-owner-global set-task-priority show-groups spin-appliance spin-livecd tag tag-build tag-pkg taginfo taskinfo unblock-group-pkg unblock-group-req unblock-pkg unlock-tag untag-build untag-pkg wait-repo watch-logs watch-task win-build wrapper-rpm write-signed-rpm"
 
    if [[ ${COMP_CWORD} -eq 1 ]] ; then
       COMPREPLY=($(compgen -W "${commands}" -- ${cur}))
@@ -202,6 +202,9 @@ _brew()
       ;;
    make-task)
       options="-h --help --channel= --priority= --watch --arch="
+      ;;
+   maven-chain)
+      options="-h --help --debug --skip-tag --scratch --nowait --force --background"
       ;;
    maven-build)
       options="-h --help --patches= -G --goal= -P --profile= -D --property= -E --env= -p --package= -J --jvm-option= -M --maven-option= --debug --specfile= --skip-tag --scratch --nowait --noprogress --background"
