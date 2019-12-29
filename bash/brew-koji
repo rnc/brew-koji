@@ -12,7 +12,7 @@ _brew()
    COMPREPLY=()
    cur="${COMP_WORDS[COMP_CWORD]}"
 
-   commands="add-external-repo add-group add-group-pkg add-group-req add-host add-host-to-channel add-pkg add-tag add-tag-inheritance add-target add-user add-volume block-group-pkg block-group-req block-pkg build buildinfo call cancel cancel-task cxl chain-build clone-tag disable-host disable-user download-build download-logs edit-external-repo edit-host edit-tag edit-tag-inheritance edit-target enable-host enable-user free-task grant-permission help image-build import import-archive import-comps import-in-place import-sig latest-build latest-by-tag latest-pkg list-api list-buildroot list-commands list-external-repos list-groups list-history list-hosts list-permissions list-pkgs list-signed list-tag-history list-tag-inheritance list-tagged list-tags list-targets list-tasks list-untagged list-volumes lock-tag make-task maven-chain maven-build mock-config moshimoshi move move-build move-pkg prune-signed-copies regen-repo remove-channel remove-external-repo remove-host-from-channel remove-pkg remove-tag remove-tag-inheritance remove-target rename-channel restart-hosts resubmit revoke-permission rpminfo runroot search set-build-volume set-pkg-arches set-pkg-owner set-pkg-owner-global set-task-priority show-groups spin-appliance spin-livecd tag tag-build tag-pkg taginfo taskinfo unblock-group-pkg unblock-group-req unblock-pkg unlock-tag untag-build untag-pkg wait-repo watch-logs watch-task win-build wrapper-rpm write-signed-rpm"
+   commands="add-external-repo add-group add-group-pkg add-group-req add-host add-host-to-channel add-notification add-pkg add-tag add-tag-inheritance add-target add-user add-volume assign-task block-group block-group-pkg block-group-req block-notification block-pkg build buildinfo call cancel cancel-task cxl chain-build clone-tag disable-host disable-user dist-repo download-build download-logs download-task edit-external-repo edit-host edit-notification edit-tag edit-tag-inheritance edit-target edit-user enable-host enable-user free-task grant-cg-access grant-permission help hostinfo image-build image-build-indirection import import-archive import-comps import-cg import-sig latest-build latest-pkg list-api list-builds list-buildroot list-channels list-commands list-external-repos list-notifications list-groups list-history list-hosts list-permissions list-pkgs list-signed list-tag-history list-tag-inheritance list-tagged list-tags list-targets list-tasks list-untagged list-volumes lock-tag make-task maven-chain maven-build mock-config moshimoshi move move-build move-pkg prune-signed-copies regen-repo remove-channel remove-external-repo remove-group remove-host-from-channel remove-notification remove-pkg remove-tag remove-tag-inheritance remove-target rename-channel restart-hosts resubmit revoke-cg-access revoke-permission rpminfo runroot search set-build-volume set-pkg-arches set-pkg-owner set-pkg-owner-global set-task-priority show-groups spin-appliance spin-livecd spin-livemedia tag tag-build tag-pkg taginfo taskinfo unblock-group-pkg unblock-group-req unblock-notification unblock-pkg unlock-tag untag-build untag-pkg wait-repo watch-logs watch-task win-build wrapper-rpm write-signed-rpm"
 
    if [[ ${COMP_CWORD} -eq 1 ]] ; then
       COMPREPLY=($(compgen -W "${commands}" -- ${cur}))
@@ -38,6 +38,9 @@ _brew()
    add-host-to-channel)
       options="-h --help --list --new"
       ;;
+   add-notification)
+      options="-h --help --user= --package= --tag= --success-only"
+      ;;
    add-pkg)
       options="-h --help --force --owner= --extra-arches="
       ;;
@@ -56,11 +59,20 @@ _brew()
    add-volume)
       options="-h --help"
       ;;
+   assign-task)
+      options="-h --help -f --force"
+      ;;
+   block-group)
+      options="-h --help"
+      ;;
    block-group-pkg)
       options="-h --help"
       ;;
    block-group-req)
       options="-h --help"
+      ;;
+   block-notification)
+      options="-h --help --user= --package= --tag= --all"
       ;;
    block-pkg)
       options="-h --help"
@@ -89,14 +101,26 @@ _brew()
    disable-user)
       options="-h --help"
       ;;
+   dist-repo)
+      options="-h --help --allow-missing-signatures -a --arch= --with-src --split-debuginfo --comps= --delta-rpms= --event= --volume= --non-latest --multilib= --noinherit --nowait --skip-missing-signatures"
+      ;;
    download-build)
       options="-h --help --arch= --type= --latestfrom= --debuginfo --key= --topurl= -q --quiet"
+      ;;
+   download-logs)
+      options="-h --help -r --recurse --nvr -m --match= -c --continue -d --dir="
+      ;;
+   download-task)
+      options="-h --help --arch= --logs --topurl= --noprogress -q --quiet"
       ;;
    edit-external-repo)
       options="-h --help --url= --name="
       ;;
    edit-host)
       options="-h --help --arches= --capacity= --description= --comment="
+      ;;
+   edit-notification)
+      options="-h --help --package= --tag= --success-only --no-success-only"
       ;;
    edit-tag)
       options="-h --help --arches= --perm= --no-perm --lock --unlock --rename= --maven-support --no-maven-support --include-all --no-include-all"
@@ -107,6 +131,9 @@ _brew()
    edit-target)
       options="-h --help --rename= --build-tag= --dest-tag="
       ;;
+   edit-user)
+      options="-h --help --rename= --edit-krb= --add-krb= --remove-krb="
+      ;;
    enable-host)
       options="-h --help --comment="
       ;;
@@ -116,14 +143,23 @@ _brew()
    free-task)
       options="-h --help"
       ;;
+   grant-cg-access)
+      options="-h --help --new"
+      ;;
    grant-permission)
       options="-h --help"
       ;;
    help)
       options="-h --help --admin"
       ;;
+   hostinfo)
+      options="-h --help"
+      ;;
    image-build)
       options="-h --help --background --config= --disk-size= --distro= --format= --kickstart= --ksurl= --ksversion= --noprogress --nowait --ova-option= --release --repo= --scratch --skip-tag= --specfile= --wait"
+      ;;
+   image-build-indirection)
+      options="-h --help --config= --background --name= --version= --release= --arch= --target= --skip-tag --base-image-task= --base-image-build= --utility-image-task= --utility-image-build= --indirection-template= --indirection-template-url= --results-loc= --scratch --wait --noprogress"
       ;;
    import)
       options="-h --help --link --test --create-build --src-epoch="
@@ -134,14 +170,11 @@ _brew()
    import-comps)
       options="-h --help --force"
       ;;
-   import-in-place)
-      options="-h --help"
+   import-cg)
+      options=" -h --help --noprogress --link --test --token="
       ;;
    import-sig)
       options="-h --help --with-unsigned --test"
-      ;;
-   latest-by-tag)
-      options="-h --help --quiet --paths"
       ;;
    latest-pkg|latest-build)
       options="-h --help --arch= --all --quiet --paths --type="
@@ -149,11 +182,20 @@ _brew()
    list-api)
       options="-h --help"
       ;;
+   list-builds)
+      options="-h --help --package= --buildid= --before= --after= --state= --type= --prefix= --owner= --volume= -k --sort-key= -r --reverse --quiet"
+      ;;
    list-buildroot)
       options="-h --help --paths --built -v --verbose"
       ;;
+   list-channels)
+      options="-h --help --simple --quiet"
+      ;;
    list-external-repos)
       options="-h --help --url= --name= --id= --tag= --used --inherit --event= --ts= --repo= --quiet"
+      ;;
+   list-notifications)
+      options="-h --help --mine --user="
       ;;
    list-groups)
       options="-h --help --event"
@@ -227,7 +269,13 @@ _brew()
    remove-external-repo)
       options="-h --help --alltags --force"
       ;;
+   remove-group)
+      options="-h --help"
+      ;;
    remove-host-from-channel)
+      options="-h --help"
+      ;;
+   remove-notification)
       options="-h --help"
       ;;
    remove-pkg)
@@ -250,6 +298,9 @@ _brew()
       ;;
    resubmit)
       options="-h --help --nowait --nowatch --quiet"
+      ;;
+   revoke-cg-access)
+      options="-h --help"
       ;;
    revoke-permission)
       options="-h --help"
@@ -287,6 +338,9 @@ _brew()
    spin-livecd)
       options="-h --help --wait --nowait --noprogress --background --ksurl= --ksversion= --scratch --repo= --release --specfile= --skip-tag="
       ;;
+   spin-livemedia)
+      options="-h --help --wait --nowait --noprogress --background --ksurl= --install-tree-url= --ksversion= --scratch --repo= --release= --title= --volid= --specfile= --skip-tag --can-fail= --lorax_dir= --lorax_url"
+      ;;
    tag-pkg|tag-build)
       options="-h --help --force --nowait"
       ;;
@@ -302,6 +356,9 @@ _brew()
    unblock-group-req)
       options="-h --help"
       ;;
+   unblock-notification)
+      options="-h --help"
+      ;;  
    unblock-pkg)
       options="-h --help"
       ;;
