@@ -662,7 +662,7 @@ _brew-koji() {
             '(--force --nowait --all )'{-h,--help}'[show this help message and exit]' \
             '--force[force operation]' \
             '--nowait[do not wait on tasks]' \
-            '--all[move all instances of a package, <pkg>'s are package names]' \
+            "--all[move all instances of a package, <pkg>'s are package names]" \
             '*: <tag1> <tag2> <pkg> [<pkg>...]' \
             && ret=0
             ;;
@@ -1043,7 +1043,7 @@ _brew-koji() {
        (list-history)
          _arguments -A "-*" \
             '(--debug --build --package --tag --editor --by --user --permission --cg --external-repo --erepo --build-target --target --group --host --channel --before --after --before-event --after-event --watch --active --revoked --context --show --verbose --events --all )'{-h,--help}'[show this help message and exit]' \
-            --debug[]' \             
+            --debug[]' \
             --build=-[Only show data for a specific build]' \
             --package=-[Only show data for a specific package]' \
             --tag=-[Only show data for a specific tag]' \
@@ -1084,7 +1084,7 @@ _brew-koji() {
             '--enabled[Limit to enabled hosts]' \
             '--not-enabled[Limit to not enabled hosts]' \
             '--quiet[Do not print header information]' \
-            '--show-channels[Show host's channels]' \
+            "--show-channels[Show host's channels]" \
             '*:' \
             && ret=0
             ;;
@@ -1126,7 +1126,7 @@ _brew-koji() {
        (list-tag-inheritance)
       _arguments -A "-*" \
          '(--reverse --stop --jump --event --ts --repo )'{-h,--help}'[show this help message and exit]' \
-         '--reverse[Process tag's children instead of its parents]' \
+         "--reverse[Process tag's children instead of its parents]" \
          '--stop=-[Stop processing inheritance at this tag]' \
          '--jump=-[Jump from one tag to another when processing inheritance]' \
          '--event=-[query at event]' \
