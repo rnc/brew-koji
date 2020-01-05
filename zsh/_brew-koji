@@ -19,22 +19,100 @@ _brew-koji() {
    case "$state" in
     (cmds)
       local commands; commands=(
+         'add-external-repo:Create an external repo and/or add one to a tag'
+         'add-group:Add a group to a tag'
+         'add-group-pkg:Add a package to a groups package listing'
+         'add-group-req:Add a group to a groups required list'
+         'add-host:Add a host'
+         'add-host-to-channel:Add a host to a channel'
          'add-pkg:Add a package to the listing for tag'
+         'add-tag:Add a new tag to the database'
+         'add-tag-inheritance:Add to a tags inheritance'
+         'add-target:Create a new build target'
+         'add-user:Add a user'
+         'add-volume:Add a new storage volume'
+         'assign-task:Assign a task to a host'
+         'block-group:Block group in tag'
+         'block-group-pkg:Block a package from a groups package listing'
+         'block-group-req:Block a groups requirement listing'
+         'block-pkg:Block a package in the listing for tag'
+         'clone-tag:Duplicate the contents of one tag onto another tag'
+         'disable-host:Mark one or more hosts as disabled'
+         'disable-user:Disable logins by a user'
+         'edit-external-repo:Edit data for an external repo'
+         'edit-host:Edit a host'
+         'edit-tag:Alter tag information'
+         'edit-tag-inheritance:Edit tag inheritance'
+         'edit-target:Set the name, build_tag, and/or dest_tag of an existing build target to new values'
+         'edit-user:Alter user information'
+         'enable-host:Mark one or more hosts as enabled'
+         'enable-user:Enable logins by a user'
+         'free-task:Free a task'
+         'grant-cg-access:Add a user to a content generator'
+         'grant-permission:Grant a permission to a user'
+         'import:Import externally built RPMs into the database'
+         'import-archive:Import an archive file and associate it with a build'
+         'import-cg:Import external builds with rich metadata'
+         'import-sig:Import signatures into the database'
+         'list-signed:List signed copies of rpms'
+         'lock-tag:Lock a tag'
+         'make-task:Create an arbitrary task'
+         'prune-signed-copies:Prune signed copies'
+         'regen-repo:Force a repo to be regenerated'
+         'remove-channel:Remove a channel entirely'
+         'remove-external-repo:Remove an external repo from a tag or tags, or remove entirely'
+         'remove-group:Remove group from tag'
+         'remove-host-from-channel:Remove a host from a channel'
+         'remove-pkg:Remove a package from the listing for tag'
+         'remove-tag:Remove a tag'
+         'remove-tag-inheritance:Remove a tag inheritance link'
+         'remove-target:Remove a build target'
+         'rename-channel:Rename a channel'
+         'restart-hosts:Restart enabled hosts'
+         'revoke-cg-access:Remove a user from a content generator'
+         'revoke-permission:Revoke a permission from a user'
+         'set-build-volume:Move a build to a different volume'
+         'set-pkg-arches:Set the list of extra arches for a package'
+         'set-pkg-owner:Set the owner for a package'
+         'set-pkg-owner-global:Set the owner for a package globally'
+         'set-task-priority:Set task priority'
+         'unblock-group-pkg:Unblock a package from a groups package listing'
+         'unblock-group-req:Unblock a groups requirement listing'
+         'unblock-pkg:Unblock a package in the listing for tag'
+         'unlock-tag:Unlock a tag'
+         'write-signed-rpm:Write signed RPMs to disk'
+         'move-build:Move one or more builds between tags'
+         'tag-build:Apply a tag to one or more builds'
+         'untag-build:Remove a tag from one or more builds'
          'build:Build a package from source'
-         'buildinfo:Print basic information about a build'
          'cancel:Cancel tasks and/or builds'
          'chain-build:Build one or more packages from source'
+         'image-build:Create a disk image given an install tree'
+         'image-build-indirection:Create a disk image using other disk images via the Indirection plugin'
+         'maven-build:Build a Maven package from source'
+         'maven-chain:Run a set of Maven builds in dependency order'
+         'resubmit:Retry a canceled or failed task, using the same parameter as the original task.'
+         'spin-appliance:Create an appliance given a kickstart file'
+         'spin-livecd:Create a live CD image given a kickstart file'
+         'spin-livemedia:Create a livemedia image given a kickstart file'
+         'win-build:Build a Windows package from source'
+         'wrapper-rpm:Build wrapper rpms for any archives associated with a build.'
          'download-build:Download a built package'
          'download-logs:Download a logs for package'
+         'download-task:Download the output of a build task'
+         'buildinfo:Print basic information about a build'
          'help:List available commands'
-         'import-comps:Import group/package information from a comps file'
-         'latest-build:Print the latest packages for each tag'
+         'hostinfo:Print basic information about a host'
+         'latest-build:Print the latest builds for a tag'
          'list-api:Print the list of XML-RPC APIs'
          'list-buildroot:List the rpms used in or built in a buildroot'
+         'list-builds:Print the build listing'
+         'list-channels:Print channels listing'
          'list-external-repos:List external repos'
          'list-groups:Print the group listings'
          'list-history:Display historical data'
          'list-hosts:Print the host listing'
+         'list-permissions:List user permissions'
          'list-pkgs:Print the package listing for tag or for owner'
          'list-tag-history:Print a history of tag operations'
          'list-tag-inheritance:Print the inheritance information for a tag'
@@ -43,188 +121,962 @@ _brew-koji() {
          'list-targets:List the build targets'
          'list-tasks:Print the list of tasks'
          'list-untagged:List untagged builds'
-         'maven-build:Build a Maven package from source'
-         'maven-chain:Run a set of Maven builds in dependency order'
+         'list-volumes:List storage volumes'
          'mock-config:Create a mock config'
-         'move-pkg:Move one or more packages between tags'
-         'resubmit:Retry a canceled or failed task, using the same parameter as the original task.'
          'rpminfo:Print basic information about an RPM'
-         'search:Search koji'
          'show-groups:Show groups data for a tag'
-         'tag-pkg:Apply a tag to one or more packages'
          'taginfo:Print basic information about a tag'
          'taskinfo:Show information about a task'
-         'untag-pkg:Remove a tag from one or more packages'
+         'call:Execute an arbitrary XML-RPC call'
+         'dist-repo:Create a yum repo with distribution options'
+         'import-comps:Import group/package information from a comps file'
+         'moshimoshi:Introduce yourself'
+         'add-notification:Add users notification'
+         'block-notification:Block users notifications'
+         'edit-notification:Edit users notification'
+         'list-notifications:List users notifications and blocks'
+         'remove-notification:Remove users notifications'
+         'unblock-notification:Unblock users notification'
          'wait-repo:Wait for a repo to be regenerated'
          'watch-logs:Watch logs in realtime'
          'watch-task:Track progress of particular tasks'
-         'win-build:Build a Windows package from source'
+         'search:Search the system'
       )
       _describe -t commands 'command' commands && ret=0
       ;;
     (args)
       case $words[1] in
+       (add-external-repo)
+         _arguments -A "-*" \
+            '(--tag --priority --mode )'{-h,--help}'[show this help message and exit]' \
+            '--tag=-[Also add repo to tag. Use tag::N to set priority]' \
+            '--priority=-[Set priority (when adding to tag)]' \
+            '--mode=-[Set merge mode]' \
+            '*: name [url]' \
+            && ret=0
+            ;;
+       (add-group)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*:<tag> <group>' \
+            && ret=0
+            ;;
+       (add-group-pkg)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*: <tag> <group> <pkg> [<pkg>...]' \
+            && ret=0
+            ;;
+       (add-group-req)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*: <tag> <target group> <required group>' \
+            && ret=0
+            ;;
+       (add-host)
+         _arguments -A "-*" \
+            '(--krb-principal )'{-h,--help}'[show this help message and exit]' \
+            '--krb-principal=-[set a non-default kerberos principal for the host]' \
+            '*: hostname arch [arch2 ...]' \
+            && ret=0
+            ;;
+       (add-host-to-channel)
+         _arguments -A "-*" \
+            '(--new )'{-h,--help}'[show this help message and exit]' \
+            '--new[Create channel if needed]' \
+            '*: hostname channel' \
+            && ret=0
+            ;;
        (add-pkg)
          _arguments -A "-*" \
-            '(--owner --force --extra-arches)'{-h,--help}'[show this help message and exit]' \
+            '(--force --owner --extra-arches )'{-h,--help}'[show this help message and exit]' \
+            '--force[Override blocks if necessary]' \
             '--owner=-[Specify owner]' \
-            '--tag=-[Specify tag]' \
             '--extra-arches=-[Specify extra arches]' \
-            '--force[Override blocks if neccessary]' \
-            '*:tag package [package...]:' \
+            '*: tag package [package2 ...]' \
+            && ret=0
+            ;;
+       (add-tag)
+         _arguments -A "-*" \
+            '(--parent --arches --maven-support --include-all --extra )'{-h,--help}'[show this help message and exit]' \
+            '--parent=-[Specify parent]' \
+            '--arches=-[Specify arches]' \
+            '--maven-support[Enable creation of Maven repos for this tag]' \
+            '--include-all[Include all packages in this tag when generating Maven repos]' \
+            '--extra=-[Set tag extra option]' \
+            '*: name' \
+            && ret=0
+          ;;
+       (add-tag-inheritance)
+         _arguments -A "-*" \
+            '(--priority --maxdepth --intransitive --noconfig --pkg-filter --force )'{-h,--help}'[show this help message and exit]' \
+            '--priority=-[Specify priority]' \
+            '--maxdepth=-[Specify max depth]' \
+            '--intransitive[Set intransitive]' \
+            '--noconfig[Set to packages only]' \
+            '--pkg-filter=-[Specify the package filter]' \
+            '--force[Force adding a parent to a tag that already has that parent tag]' \
+            '*: tag parent-tag' \
+            && ret=0
+          ;;
+       (add-target)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*:name build-tag <dest-tag>' \
+            && ret=0
+            ;;
+       (add-user)
+         _arguments -A "-*" \
+            '(--principal --disable )'{-h,--help}'[show this help message and exit]' \
+            '--principal=-[The Kerberos principal for this user]' \
+            '--disable[Prohibit logins by this user]' \
+            '*:username ' \
+            && ret=0
+            ;;
+       (add-volume)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*:volume-name' \
+            && ret=0
+            ;;
+       (assign-task)
+         _arguments -A "-*" \
+            '(--force )'{-h,--help}'[show this help message and exit]' \
+            '--force[force to assign a non-free task]' \
+            '*:task_id hostname' \
+            && ret=0
+            ;;
+       (block-group)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*:<tag> <group>' \
+            && ret=0
+            ;;
+       (block-group-pkg)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*: <tag> <group> <pkg> [<pkg>...]' \
+            && ret=0
+            ;;
+       (block-group-req)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*: <tag> <group> <blocked req>' \
+            && ret=0
+            ;;
+       (block-pkg)
+         _arguments -A "-*" \
+            '(--force )'{-h,--help}'[show this help message and exit]' \
+            '--force[Override blocks and owner if necessary]' \
+            '*: tag package [package2 ...]' \
+            && ret=0
+            ;;
+       (clone-tag)
+         _arguments -A "-*" \
+            '(--config --groups --pkgs --builds --all --latest-only --inherit-builds --ts --event --repo --verbose --force --test --batch )'{-h,--help}'[show this help message and exit]' \
+            '--config[Copy config from the source to the dest tag]' \
+            '--groups[Copy group information]' \
+            '--pkgs[Copy package list from the source to the dest tag]' \
+            '--builds[Tag builds into the dest tag]' \
+            '--all[The same as --config --groups --pks --builds]' \
+            '--latest-only[Tag only the latest build of each package]' \
+            '--inherit-builds[Include all builds inherited into the source tag into the dest tag]' \
+            '--ts=-[Clone tag at a specific timestamp]' \
+            '--event=-[Clone tag at a specific event]' \
+            '--repo=-[Clone tag at a specific repo event]' \
+            '--verbose[show changes]' \
+            '--force[override tag locks if necessary]' \
+            '--test[test mode]' \
+            '--batch=-[batch size of multicalls (0 to disable, default: 1000)]' \
+            '*: <src-tag> <dst-tag>' \
+            && ret=0
+            ;;
+       (disable-host)
+         _arguments -A "-*" \
+            '(--comment )'{-h,--help}'[show this help message and exit]' \
+            '--comment=-[Comment indicating why the host(s) are being disabled]' \
+            '*: hostname ...' \
+            && ret=0
+            ;;
+       (disable-user)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*:username' \
+            && ret=0
+            ;;
+       (edit-external-repo)
+         _arguments -A "-*" \
+            '(--url --name )'{-h,--help}'[show this help message and exit]' \
+            '--url=-[Change the url]' \
+            '--name=-[Change the name]' \
+            '*:name' \
+            && ret=0
+            ;;
+       (edit-host)
+         _arguments -A "-*" \
+            '(--arches --capacity --description --comment )'{-h,--help}'[show this help message and exit]' \
+            '--arches=-[Space or comma-separated list of supported]' \
+            '--capacity=-[Capacity of this host]' \
+            '--description=-[Description of this host]' \
+            '--comment=-[A brief comment about this host]' \
+            '*:hostname ... ' \
+            && ret=0
+            ;;
+       (edit-tag)
+         _arguments -A "-*" \
+            '(--arches --perm --no-perm --lock --unlock --rename --maven-support --no-maven-support --include-all --no-include-all --extra --remove-extra )'{-h,--help}'[show this help message and exit]' \
+            '--arches=-[Specify arches]' \
+            '--perm=-[Specify permission requirement]' \
+            '--no-perm[Remove permission requirement]' \
+            '--lock[Lock the tag]' \
+            '--unlock[Unlock the tag]' \
+            '--rename=-[Rename the tag]' \
+            '--maven-support[Enable creation of Maven repos for this tag]' \
+            '--no-maven-support[Disable creation of Maven repos for this tag]' \
+            '--include-all[Include all packages in this tag when generating Maven repos]' \
+            '--no-include-all[Do not include all packages in this tag when generating Maven repos]' \
+            '--extra=-[Set tag extra option]' \
+            '--remove-extra=-[Remove tag extra option]' \
+            '*: name' \
+            && ret=0
+            ;;
+       (edit-tag-inheritance)
+         _arguments -A "-*" \
+            '(--priority --maxdepth --intransitive --noconfig --pkg-filter )'{-h,--help}'[show this help message and exit]' \
+            '--priority=-[Specifya new priority]' \
+            '--maxdepth=-[Specify max depth]' \
+            '--intransitive[Set intransitive]' \
+            '--noconfig[Set to packages only]' \
+            '--pkg-filter=-[Specify the package filter]' \
+            '*: tag <parent> <priority>' \
+            && ret=0
+            ;;
+       (edit-target)
+         _arguments -A "-*" \
+            '(--rename --build-tag --dest-tag )'{-h,--help}'[show this help message and exit]' \
+            '--rename=-[Specify new name for target]' \
+            '--build-tag=-[Specify a different build tag]' \
+            '--dest-tag=-[Specify a different destination tag]' \
+            '*: name' \
+            && ret=0
+            ;;
+       (edit-user)
+         _arguments -A "-*" \
+            '(--rename --edit-krb --add-krb --remove-krb )'{-h,--help}'[show this help message and exit]' \
+            '--rename=-[Rename the user]' \
+            '--edit-krb=-[Change kerberos principal of the user]' \
+            '--add-krb=-[Add kerberos principal of the user]' \
+            '--remove-krb=-[Remove kerberos principal of the user]' \
+            '*:name ' \
+            && ret=0
+            ;;
+       (enable-host)
+         _arguments -A "-*" \
+            '(--comment )'{-h,--help}'[show this help message and exit]' \
+            '--comment=-[Comment indicating why the host(s) are being enabled]' \
+            '*: hostname ...' \
+            && ret=0
+            ;;
+       (enable-user)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*:username' \
+            && ret=0
+            ;;
+       (free-task)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*: <task-id> [<task-id> ...]' \
+            && ret=0
+            ;;
+       (grant-cg-access)
+         _arguments -A "-*" \
+            '(--new )'{-h,--help}'[show this help message and exit]' \
+            '--new[Create a new content generator]' \
+            '*:<user> <content generator>' \
+            && ret=0
+            ;;
+       (grant-permission)
+         _arguments -A "-*" \
+            '(--new )'{-h,--help}'[show this help message and exit]' \
+            '--new[Create a new permission]' \
+            '*:<permission> <user> [<user> ...]' \
+            && ret=0
+            ;;
+       (import)
+         _arguments -A "-*" \
+            '(--link --test --create-build --src-epoch )'{-h,--help}'[show this help message and exit]' \
+            '--link[Attempt to hardlink instead of uploading]' \
+            "--test[Don't actually import]" \
+            '--create-build[Auto-create builds as needed]' \
+            '--src-epoch=-[When auto-creating builds, use this epoch]' \
+            '*: package [package...]' \
+            && ret=0
+            ;;
+       (import-archive)
+         _arguments -A "-*" \
+            '(--noprogress --create-build --link --type --type-info )'{-h,--help}'[show this help message and exit]' \
+            '--noprogress[Do not display progress of the upload]' \
+            '--create-build[Auto-create builds as needed]' \
+            '--link[Attempt to hardlink instead of uploading]' \
+            '--type=-[The type of archive being imported.  Currently supported types: maven, win, image]' \
+            '--type-info=-[Type-specific information to associate with the archives.  For Maven archives this should be a local path to a .pom file.  For Windows archives this should be relpath:platforms[:flags]))  Images need an arch]' \
+            '*:build-id|n-v-r /path/to/archive...' \
+            && ret=0
+            ;;
+       (import-cg)
+         _arguments -A "-*" \
+            '(--noprogress --link --test --token )'{-h,--help}'[show this help message and exit]' \
+            '--noprogress[Do not display progress of the upload]' \
+            '--link[Attempt to hardlink instead of uploading]' \
+            "--test[Don't actually import]" \
+            '--token=-[Build reservation token]' \
+            '*: metadata_file files_dir' \
+            && ret=0
+            ;;
+       (import-sig)
+         _arguments -A "-*" \
+            '(--with-unsigned --write --test)'{-h,--help}'[show this help message and exit]' \
+            '--with-unsigned[Also import unsigned sig headers]' \
+            '--write[Also write the signed copies]' \
+            "--test[Test mode -- don't actually import]" \
+            '*: package [package...]' \
+            && ret=0
+            ;;
+       (list-signed)
+         _arguments -A "-*" \
+            '(--debug --key --build --rpm --tag )'{-h,--help}'[show this help message and exit]' \
+            '--debug[]' \
+            '--key=-[Only list RPMs signed with this key]' \
+            '--build=-[Only list RPMs from this build]' \
+            '--rpm=-[Only list signed copies for this RPM]' \
+            '--tag=-[Only list RPMs within this tag]' \
+            '*:' \
+            && ret=0
+            ;;
+       (lock-tag)
+         _arguments -A "-*" \
+            '(--perm --glob --master --test )'{-h,--help}'[show this help message and exit]' \
+            '--perm=-[Specify permission requirement]' \
+            '--glob[Treat args as glob patterns]' \
+            '--master[Lock the master lock]' \
+            '--test[Test mode]' \
+            '*: <tag> [<tag> ...]' \
+            && ret=0
+            ;;
+       (make-task)
+         _arguments -A "-*" \
+            '(--channel --priority --watch --arch )'{-h,--help}'[show this help message and exit]' \
+            '--channel=-[set channel]' \
+            '--priority=-[set priority]' \
+            '--watch[watch the task]' \
+            '--arch=-[set arch]' \
+            '*: <method> [<arg>...]' \
+            && ret=0
+            ;;
+       (prune-signed-copies)
+         _arguments -A "-*" \
+            '(--test --verbose --days --package --pkg --build --ignore-tag --ignore-tag-file --protect-tag --protect-tag-file --trashcan-tag --debug )'{-h,--help}'[show this help message and exit]' \
+            '--test[Test mode]' \
+            '--verbose[Be more verbose]' \
+            '--days=-[Timeout before clearing]' \
+            '--pkg=-[Limit to a single package]' \
+            '--build=-[Limit to a single build]' \
+            '--ignore-tag=-[Ignore these tags when considering whether a build is/was latest]' \
+            '--ignore-tag-file=-[File to read tag ignore patterns from]' \
+            '--protect-tag=-[Do not prune signed copies from matching tags]' \
+            '--protect-tag-file=-[File to read tag protect patterns from]' \
+            '--trashcan-tag=-[Specify trashcan tag]' \
+            '--debug[Show debugging output]' \
+            '*: ' \
+            && ret=0
+            ;;
+       (regen-repo)
+         _arguments -A "-*" \
+            '(--target --nowait --debuginfo --source, --src --separate-source, --separate-src )'{-h,--help}'[show this help message and exit]' \
+            '--target[Interpret the argument as a build target name]' \
+            "--nowait[Don't wait on for regen to finish]" \
+            '--debuginfo[Include debuginfo rpms in repo]' \
+            '--src[Include source rpms in each of repos]' \
+            '--separate-src[Include source rpms in separate src repo]' \
+            '*: <tag>' \
+            && ret=0
+            ;;
+       (remove-channel)
+         _arguments -A "-*" \
+            '(--force )'{-h,--help}'[show this help message and exit]' \
+            '--force[force removal, if possible]' \
+            '*: channel' \
+            && ret=0
+            ;;
+       (remove-external-repo)
+         _arguments -A "-*" \
+            '(--alltags --force )'{-h,--help}'[show this help message and exit]' \
+            '--alltags[Remove from all tags]' \
+            '--force[Force action]' \
+            '*:repo [tag ...]' \
+            && ret=0
+            ;;
+       (remove-group)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*:<tag> <group>' \
+            && ret=0
+            ;;
+       (remove-host-from-channel)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*: hostname channel' \
+            && ret=0
+            ;;
+       (remove-pkg)
+         _arguments -A "-*" \
+            '(--force )'{-h,--help}'[show this help message and exit]' \
+            '--force[Override blocks if necessary]' \
+            '*: tag package [package2 ...]' \
+            && ret=0
+            ;;
+       (remove-tag)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*: name' \
+            && ret=0
+            ;;
+       (remove-tag-inheritance)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*:tag <parent> <priority>' \
+            && ret=0
+            ;;
+       (remove-target)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*: name' \
+            && ret=0
+            ;;
+       (rename-channel)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*: old-name new-name' \
+            && ret=0
+            ;;
+       (restart-hosts)
+         _arguments -A "-*" \
+            '(--wait --nowait --quiet --force --channel --arch --timeout )'{-h,--help}'[show this help message and exit]' \
+            '--wait[Wait on the task, even if running in the background]' \
+            "--nowait[Don't wait on task]" \
+            '--quiet[Do not print the task information]' \
+            '--force[Ignore checks and force operation]' \
+            '--channel=-[Only hosts in this channel]' \
+            '--arch=-[Limit to hosts of this architecture (can be given multiple times)]' \
+            '--timeout=-[Time out after N seconds]' \
+            '*:' \
+            && ret=0
+            ;;
+       (revoke-cg-access)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*:<user> <content generator>' \
+            && ret=0
+            ;;
+       (revoke-permission)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*:<permission> <user> [<user> ...]' \
+            && ret=0
+            ;;
+       (set-build-volume)
+         _arguments -A "-*" \
+            '(--verbose )'{-h,--help}'[show this help message and exit]' \
+            '--verbose[Be verbose]' \
+            '*:volume n-v-r [n-v-r ...]' \
+            && ret=0
+            ;;
+       (set-pkg-arches)
+         _arguments -A "-*" \
+            '(--force )'{-h,--help}'[show this help message and exit]' \
+            '--force[Force operation]' \
+            '*: arches tag package [package2 ...]' \
+            && ret=0
+            ;;
+       (set-pkg-owner)
+         _arguments -A "-*" \
+            '(--force )'{-h,--help}'[show this help message and exit]' \
+            '--force[Force operation]' \
+            '*: owner tag package [package2 ...]' \
+            && ret=0
+            ;;
+       (set-pkg-owner-global)
+         _arguments -A "-*" \
+            '(--verbose --test --old-user --from )'{-h,--help}'[show this help message and exit]' \
+            '--verbose[List changes]' \
+            '--test[Test mode]' \
+            '--from=-[Only change ownership for packages belonging to this user]' \
+            '*: owner package [package2 ...]' \
+            && ret=0
+            ;;
+       (set-task-priority)
+         _arguments -A "-*" \
+            '(--priority --recurse )'{-h,--help}'[show this help message and exit]' \
+            '--priority=-[New priority]' \
+            '--recurse[Change priority of child tasks as well]' \
+            '*: --priority=<priority> <task-id> [task-id]...' \
+            && ret=0
+            ;;
+       (unblock-group-pkg)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*: <tag> <group> <pkg> [<pkg>...]' \
+            && ret=0
+            ;;
+       (unblock-group-req)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*: <tag> <group> <requirement>' \
+            && ret=0
+            ;;
+       (unblock-pkg)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*: tag package [package2 ...]' \
+            && ret=0
+            ;;
+       (unlock-tag)
+         _arguments -A "-*" \
+            '(--glob --test )'{-h,--help}'[show this help message and exit]' \
+            '--glob[Treat args as glob patterns]' \
+            '--test[Test mode]' \
+            '*: <tag> [<tag> ...]' \
+            && ret=0
+            ;;
+       (write-signed-rpm)
+         _arguments -A "-*" \
+            '(--all --buildid )'{-h,--help}'[show this help message and exit]' \
+            '--all[Write out all RPMs signed with this key]' \
+            '--buildid=-[Specify a build id rather than an n-v-r]' \
+            '*: <signature-key> n-v-r [n-v-r...]' \
+            && ret=0
+            ;;
+       (move-build)
+         _arguments -A "-*" \
+            '(--force --nowait --all )'{-h,--help}'[show this help message and exit]' \
+            '--force[force operation]' \
+            '--nowait[do not wait on tasks]' \
+            '--all[move all instances of a package, <pkg>'s are package names]' \
+            '*: <tag1> <tag2> <pkg> [<pkg>...]' \
+            && ret=0
+            ;;
+       (tag-build)
+         _arguments -A "-*" \
+            '(--force --nowait )'{-h,--help}'[show this help message and exit]' \
+            '--force[force operation]' \
+            '--nowait[Do not wait on task]' \
+            '*: <tag> <pkg> [<pkg>...]' \
+            && ret=0
+            ;;
+       (untag-build)
+         _arguments -A "-*" \
+            '(--all --non-latest --test --verbose --force )'{-h,--help}'[show this help message and exit]' \
+            '--all[untag all versions of the package in this tag]' \
+            '--non-latest[untag all versions of the package in this tag except the latest]' \
+            '--test[test mode]' \
+            '--verbose[print details]' \
+            '--force[force operation]' \
+            '*: <tag> <pkg> [<pkg>...]' \
             && ret=0
             ;;
        (build)
          _arguments -A "-*" \
-            '(--skip-tag --scratch --wait --nowait --quiet --arch\-override --repo\-id --noprogress --background)'{-h,--help}'[show this help message and exit]' \
+            '(--skip-tag --scratch --wait --nowait --quiet --arch-override --fail-fast --repo-id --noprogress --background )'{-h,--help}'[show this help message and exit]' \
             '--skip-tag[Do not attempt to tag package]' \
             '--scratch[Perform a scratch build]' \
             '--wait[Wait on the build, even if running in the background]' \
-            '--nowait[Dont wait on build]' \
+            "--nowait[Don't wait on build]" \
             '--quiet[Do not print the task information]' \
             '--arch-override=-[Override build arches]' \
+            '--fail-fast[Override build_arch_can_fail settings and fail as fast as possible]' \
             '--repo-id=-[Use a specific repo]' \
             '--noprogress[Do not display progress of the upload]' \
             '--background[Run the build at a lower priority]' \
-            '*:target URL:' \
+            '*: target <srpm path or scm url>' \
             && ret=0
-         ;;
-       (buildinfo)
-         _arguments -A "-*" \
-            '(--changelog)--help[show this help message and exit]' \
-            '--changelog[Show the changelog for the build]' \
-            '*:<n-v-r> [<n-v-r>...:' \
-            && ret=0
-         ;;
+            ;;
        (cancel)
          _arguments -A "-*" \
-            '(--justone --full --force)--help[show this help message and exit]' \
+            '(--justone --full --force)'{-h,--help}'[show this help message and exit]' \
             '--justone[Do not cancel subtasks]' \
             '--full[Full cancellation (admin only)]' \
             '--force[Allow subtasks with --full]' \
-            '*:<task-id|build> [<task-id|build> ...]' \
+            '*: <task-id|build> [<task-id|build> ...]' \
             && ret=0
-         ;;
+            ;;
        (chain-build)
          _arguments -A "-*" \
-            '(--nowait --noprogress --background)--help[show this help message and exit]' \
-            '--nowait[Dont wait on build]' \
-            '--noprogress[Do not display progress of the upload]' \
+            '(--nowait --quiet --background )'{-h,--help}'[show this help message and exit]' \
+            "--nowait[Don't wait on build]" \
+            '--quiet[Do not print the task information]' \
             '--background[Run the build at a lower priority]' \
-            '*:target URL [URL2 [:] URL3 [:] URL4 ...]xs' \
+            '*: target URL [URL2 [:] URL3 [:] URL4 ...]' \
             && ret=0
-         ;;
-       (download-logs)
+            ;;
+       (image-build)
          _arguments -A "-*" \
-            '(--recurse --nvr --match --continue --dir)--help[show this help message and exit]' \
-            '--recurse[Process children of this task as well]' \
-            '--nvr=-[Get logs from n-v-r]' \
-            '*--match=-[Get only log matching PATTERN. May be used multiple times]' \
-            '--continue[Continue previous download]' \
-            '--dir=-[Download to this directory]' \
-            '*:<n-v-r | build_id | package>' \
+            '(--background --config --disk-size --distro --format --kickstart --ksurl --ksversion --noprogress --nowait --ova-option --factory-parameter --release --repo --scratch --skip-tag --can-fail --specfile --wait )'{-h,--help}'[show this help message and exit]' \
+            '--background[Run the image creation task at a lower priority]' \
+            '--config=-[Use a configuration file to define image-build options instead of command line options (they will be ignored).]' \
+            '--disk-size=-[Set the disk device size in gigabytes]' \
+            '--distro=-[specify the RPM based distribution the image will be based on with the format RHEL-X.Y, CentOS-X.Y, SL-X.Y, or Fedora-NN. The packages for the Distro you choose must have been built in this system.]' \
+            '--format=-[Convert results to one or more formats (vmdk, qcow, qcow2, vdi, vpc, rhevm-ova, vsphere-ova, vagrant-virtualbox, vagrant-libvirt, vagrant-vmware-fusion, vagrant-hyperv, docker, raw-xz, liveimg-squashfs, tar-gz), this option may be used multiple times. By default, specifying this option will omit the raw disk image (which is 10G in size) from the build results. If you really want it included with converted images, pass in 'raw' as an option.]' \
+            '--kickstart=-[Path to a local kickstart file]' \
+            '--ksurl=-[The URL to the SCM containing the kickstart file]' \
+            '--ksversion=-[The syntax version used in the kickstart file]' \
+            '--noprogress[Do not display progress of the upload]' \
+            "--nowait[Don't wait on image creation]" \
+            '--ova-option=-[Override a value in the OVA description XML. Provide a value in a name=value format, such as 'ovf_memory_mb=6144']' \
+            '--factory-parameter=-[Pass a parameter to Image Factory. The results are highly specific to the image format being created. This is a two argument parameter that can be specified an arbitrary number of times. For example: --factory-parameter docker_cmd '[ "/bin/echo Hello World" ]']' \
+            '--release=-[Forcibly set the release field]' \
+            '--repo=-[Specify a repo that will override the repo used to install RPMs in the image. May be used multiple times. The build tag repo associated with the target is the default.]' \
+            '--scratch[Create a scratch image]' \
+            '--skip-tag[Do not attempt to tag package]' \
+            '--can-fail=-[List of archs which are not blocking for build (separated by commas.)]' \
+            '--specfile=-[SCM URL to spec file fragment to use to generate wrapper RPMs]' \
+            '--wait[Wait on the image creation, even if running in the background]' \
+            '*: <name> <version> <target> <install-tree-url> <arch> [<arch>...]' \
             && ret=0
-         ;;
+            ;;
+       (image-build-indirection)
+         _arguments -A "-*" \
+            '(--config --background --name --version --release --arch --target --skip-tag --base-image-task --base-image-build --utility-image-task --utility-image-build --indirection-template --indirection-template-url --results-loc --scratch --wait --noprogress )'{-h,--help}'[show this help message and exit]' \
+            '--config=-[Use a configuration file to define image-build options instead of command line options (they will be ignored).]' \
+            '--background[Run the image creation task at a lower priority]' \
+            '--name=-[Name of the output image]' \
+            '--version=-[Version of the output image]' \
+            '--release=-[Release of the output image]' \
+            '--arch=-[Architecture of the output image and input images]' \
+            '--target=-[Build target to use for the indirection build]' \
+            '--skip-tag[Do not tag the resulting build]' \
+            '--base-image-task=-[ID of the createImage task of the base image to be used]' \
+            '--base-image-build=-[NVR or build ID of the base image to be used]' \
+            '--utility-image-task=-[ID of the createImage task of the utility image to be used]' \
+            '--utility-image-build=-[NVR or build ID of the utility image to be used]' \
+            '--indirection-template=-[Name of the local file, or SCM file containing the template used to drive the indirection plugin]' \
+            '--indirection-template-url=-[SCM URL containing the template used to drive the indirection plugin]' \
+            '--results-loc=-[Relative path inside the working space image where the results should be extracted from]' \
+            '--scratch[Create a scratch image]' \
+            '--wait[Wait on the image creation, even if running in the background]' \
+            '--noprogress[Do not display progress of the upload]' \
+            '*:[base_image] [utility_image] [indirection_build_template]' \
+            && ret=0
+            ;;
+       (maven-build)
+         _arguments -A "-*" \
+            '(--patches --goal --profile --property --env --package --jvm-option --maven-option --ini --section --debug --specfile --skip-tag --scratch --nowait --quiet --background )'{-h,--help}'[show this help message and exit]' \
+            '--patches=-[SCM URL of a directory containing patches to apply to the sources before building]' \
+            '--goal=-[Additional goal to run before "deploy"]' \
+            '--profile=-[Enable a profile for the Maven build]' \
+            '--property=-[Pass a system property to the Maven build]' \
+            '--env=-[Set an environment variable]' \
+            '--package=-[Install an additional package into the buildroot]' \
+            '--jvm-option=-[Pass a command-line option to the JVM]' \
+            '--maven-option=-[Pass a command-line option to Maven]' \
+            '--ini=-[Pass build parameters via a .ini file]' \
+            '--section=-[Get build parameters from this section of the .ini]' \
+            '--debug[Run Maven build in debug mode]' \
+            '--specfile=-[SCM URL of a spec file fragment to use to generate wrapper RPMs]' \
+            '--skip-tag[Do not attempt to tag package]' \
+            '--scratch[Perform a scratch build]' \
+            "--nowait[Don't wait on build]" \
+            '--quiet[Do not print the task information]' \
+            '--background[Run the build at a lower priority]' \
+            '*: target URL' \
+            && ret=0
+            ;;
+       (maven-chain)
+         _arguments -A "-*" \
+            '(--skip-tag --scratch --debug --force --nowait --background )'{-h,--help}'[show this help message and exit]' \
+            '--skip-tag[Do not attempt to tag builds]' \
+            '--scratch[Perform scratch builds]' \
+            '--debug[Run Maven build in debug mode]' \
+            '--force[Force rebuilds of all packages]' \
+            "--nowait[Don't wait on build]" \
+            '--background[Run the build at a lower priority]' \
+            '*: target config...' \
+            && ret=0
+            ;;
+       (resubmit)
+         _arguments -A "-*" \
+            '(--nowait --nowatch --quiet )'{-h,--help}'[show this help message and exit]' \
+            "--nowait[Don't wait on task]" \
+            '--nowatch[An alias for --nowait]' \
+            '--quiet[Do not print the task information]' \
+            '*: taskID' \
+            && ret=0
+            ;;
+       (spin-appliance)
+         _arguments -A "-*" \
+            '(--wait --nowait --noprogress --background --ksurl --ksversion --scratch --repo --release --specfile --skip-tag --vmem --vcpu --format )'{-h,--help}'[show this help message and exit]' \
+            '--wait[Wait on the appliance creation, even if running in the background]' \
+            "--nowait[Don't wait on appliance creation]" \
+            '--noprogress[Do not display progress of the upload]' \
+            '--background[Run the appliance creation task at a lower priority]' \
+            '--ksurl=-[The URL to the SCM containing the kickstart file]' \
+            '--ksversion=-[The syntax version used in the kickstart file]' \
+            '--scratch[Create a scratch appliance]' \
+            '--repo=-[Specify a repo that will override the repo used to install RPMs in the appliance. May be used multiple times. The build tag repo associated with the target is the default.]' \
+            '--release=-[Forcibly set the release field]' \
+            '--specfile=-[SCM URL to spec file fragment to use to generate wrapper RPMs]' \
+            '--skip-tag[Do not attempt to tag package]' \
+            '--vmem=-[Set the amount of virtual memory in the appliance in MB, default is 512]' \
+            '--vcpu=-[Set the number of virtual cpus in the appliance, default is 1]' \
+            '--format=-[ Disk format, default is raw. Other options are qcow, qcow2, and vmx.]' \
+            '*: <name> <version> <target> <arch> <kickstart-file>' \
+            && ret=0
+            ;;
+       (spin-livecd)
+         _arguments -A "-*" \
+            '(--wait --nowait --noprogress --background --ksurl --ksversion --scratch --repo --release --volid --specfile --skip-tag )'{-h,--help}'[show this help message and exit]' \
+            '--wait[Wait on the livecd creation, even if running in the background]' \
+            "--nowait[Don't wait on livecd creation]" \
+            '--noprogress[Do not display progress of the upload]' \
+            '--background[Run the livecd creation task at a lower priority]' \
+            '--ksurl=-[The URL to the SCM containing the kickstart file]' \
+            '--ksversion=-[The syntax version used in the kickstart file]' \
+            '--scratch[Create a scratch LiveCD image]' \
+            '--repo=-[Specify a repo that will override the repo used to install RPMs in the LiveCD. May be used multiple times. The build tag repo associated with the target is the default.]' \
+            '--release=-[Forcibly set the release field]' \
+            '--volid=-[Set the volume id]' \
+            '--specfile=-[SCM URL to spec file fragment to use to generate wrapper RPMs]' \
+            '--skip-tag[Do not attempt to tag package]' \
+            '*: <name> <version> <target> <arch> <kickstart-file>' \
+            && ret=0
+            ;;
+       (spin-livemedia)
+         _arguments -A "-*" \
+            '(--wait --nowait --noprogress --background --ksurl --install-tree-url --ksversion --scratch --repo --release --title --volid --specfile --skip-tag --can-fail --lorax_dir --lorax_url )'{-h,--help}'[show this help message and exit]' \
+            '--wait[Wait on the livemedia creation, even if running in the background]' \
+            "--nowait[Don't wait on livemedia creation]" \
+            '--noprogress[Do not display progress of the upload]' \
+            '--background[Run the livemedia creation task at a lower priority]' \
+            '--ksurl=-[The URL to the SCM containing the kickstart file]' \
+            '--install-tree-url=-[Provide the URL for the install tree]' \
+            '--ksversion=-[The syntax version used in the kickstart file]' \
+            '--scratch[Create a scratch LiveMedia image]' \
+            '--repo=-[Specify a repo that will override the repo used to install RPMs in the LiveMedia. May be used multiple times. The build tag repo associated with the target is the default.]' \
+            '--release=-[Forcibly set the release field]' \
+            '--title=-[Set the image title (defaults to <name>)]' \
+            '--volid=-[Set the volume id]' \
+            '--specfile=-[SCM URL to spec file fragment to use to generate wrapper RPMs]' \
+            '--skip-tag[Do not attempt to tag package]' \
+            '--can-fail=-[List of archs which are not blocking for build (separated by commas.)]' \
+            '--lorax_dir=-[The relative path to the lorax templates directory within the checkout of "lorax_url".]' \
+            '--lorax_url=-[The URL to the SCM containing any custom lorax templates that are to be used to override the default templates.]' \
+            '*: <name> <version> <target> <arch> <kickstart-file>' \
+            && ret=0
+            ;;
+       (win-build)
+         _arguments -A "-*" \
+            '(--winspec --patches --cpus --mem --static-mac --specfile --scratch --repo-id --skip-tag --background --wait --nowait --quiet )'{-h,--help}'[show this help message and exit]' \
+            '--winspec=-[specified, the winspec must be in the root directory of the source repository.]' \
+            '--patches=-[SCM URL of a directory containing patches to apply to the sources before building]' \
+            '--cpus=-[Number of cpus to allocate to the build VM (requires admin access)]' \
+            '--mem=-[Amount of memory (in megabytes) to allocate to the build VM (requires admin access)]' \
+            '--static-mac[Retain the original MAC address when cloning the VM]' \
+            '--specfile=-[SCM URL of a spec file fragment to use to generate wrapper RPMs]' \
+            '--scratch[Perform a scratch build]' \
+            '--repo-id=-[Use a specific repo]' \
+            '--skip-tag[Do not attempt to tag package]' \
+            '--background[Run the build at a lower priority]' \
+            '--wait[Wait on the build, even if running in the background]' \
+            "--nowait[Don't wait on build]" \
+            '--quiet[Do not print the task information]' \
+            '*: target URL VM' \
+            && ret=0
+            ;;
+       (wrapper-rpm)
+         _arguments -A "-*" \
+            '(--create-build --ini --section --skip-tag --scratch --nowait --background )'{-h,--help}'[show this help message and exit]' \
+            '--create-build[Create a new build to contain wrapper rpms]' \
+            '--ini=-[Pass build parameters via a .ini file]' \
+            '--section=-[Get build parameters from this section of the .ini]' \
+            "--skip-tag[If creating a new build, don't tag it]" \
+            '--scratch[Perform a scratch build]' \
+            "--nowait[Don't wait on build]" \
+            '--background[Run the build at a lower priority]' \
+            '*: target build-id|n-v-r URL' \
+            && ret=0
+            ;;
        (download-build)
          _arguments -A "-*" \
-            '(--arch --type --latestfrom --debuginfo --key --topurl --quiet)--help[show this help message and exit]' \
-            '--arch=-[Only download packages for this arch (may be used]' \
-            '--type=-[Download archives of the given type, rather than rpms]' \
+            '(--arch --type --latestfrom --debuginfo --task-id --rpm --key --topurl --noprogress --quiet )'{-h,--help}'[show this help message and exit]' \
+            '--arch=-[Only download packages for this arch (may be used multiple times)]' \
+            '--type=-[Download archives of the given type, rather than rpms (maven, win, or image)]' \
             '--latestfrom=-[Download the latest build from this tag]' \
             '--debuginfo[Also download -debuginfo rpms]' \
+            '--task-id[Interperet id as a task id]' \
+            '--rpm[Download the given rpm]' \
             '--key=-[Download rpms signed with the given key]' \
             '--topurl=-[URL under which Koji files are accessible]' \
-            '--quiet[Do not display progress meter]' \
-            '*:<n-v-r | build_id | package>' \
+            '--noprogress[Do not display progress meter]' \
+            '--quiet[Suppress output]' \
+            '*: <n-v-r | build_id | package>' \
             && ret=0
-         ;;
+            ;;
+       (download-logs)
+         _arguments -A "-*" \
+            '(--recurse --nvr --match --continue --dir )'{-h,--help}'[show this help message and exit]' \
+            '--recurse[Process children of this task as well]' \
+            '--nvr[Get logs from n-v-r]' \
+            '--match=-[Get only log matching PATTERN. May be used multiple times.]' \
+            '--continue[Continue previous download]' \
+            '--dir=-[Write logs to DIRECTORY]' \
+            '*: <task-id> [<task-id> ...]' \
+            && ret=0
+            ;;
+       (download-task)
+         _arguments -A "-*" \
+            '(--arch --logs --topurl --noprogress --quiet )'{-h,--help}'[show this help message and exit]' \
+            '--arch=-[Only download packages for this arch (may be used multiple times)]' \
+            '--logs[Also download build logs]' \
+            '--topurl=-[URL under which Koji files are accessible]' \
+            '--noprogress[Do not display progress meter]' \
+            '--quiet[Suppress output]' \
+            '*:<task_id>' \
+            && ret=0
+            ;;
+       (buildinfo)
+         _arguments -A "-*" \
+            '(--changelog )'{-h,--help}'[show this help message and exit]' \
+            '--changelog[Show the changelog for the build]' \
+            '*: <n-v-r> [<n-v-r> ...]' \
+            && ret=0
+            ;;
        (help)
          _arguments -A "-*" \
-            '--help[show this help message and exit]' \
-            '--admin[show admin commands]' \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*:<category> ...' \
             && ret=0
-         ;;
-       (import-comps)
+            ;;
+       (hostinfo)
          _arguments -A "-*" \
-            '(--force)--help[show this help message and exit]' \
-            '--force[force import]' \
-            '*:file tag' \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*: <hostname> [<hostname> ...]' \
             && ret=0
-         ;;
+            ;;
        (latest-build)
          _arguments -A "-*" \
-            '(--arch --all --quiet --paths --type)--help[show this help message and exit]' \
+            '(--arch --all --quiet --paths --type )'{-h,--help}'[show this help message and exit]' \
             '--arch=-[List all of the latest packages for this arch]' \
-            '--all=-[List all of the latest packages for this tag]' \
+            '--all[List all of the latest packages for this tag]' \
             '--quiet[Do not print the header information]' \
             '--paths[Show the file paths]' \
-            '--type=-[Show builds of the given type only. Currently supported types: maven]' \
-            '*:tag package [package...]:' \
+            '--type=-[Show builds of the given type only.  Currently supported types: maven]' \
+            '*: tag package [package...]' \
             && ret=0
-         ;;
-       (latest-pkg)
+            ;;
+       (list-api)
          _arguments -A "-*" \
-            '(--arch --all --quiet --paths --type)--help[show this help message and exit]' \
-            '--arch=-[List all of the latest packages for this arch]' \
-            '--all=-[List all of the latest packages for this tag]' \
-            '--quiet[Do not print the header information]' \
-            '--paths[Show the file paths]' \
-            '--type=-[Show builds of the given type only. Currently supported types: maven]' \
-            '*:tag package [package...]:' \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*:' \
             && ret=0
-         ;;
-       # list-api - no arguments.
+            ;;
        (list-buildroot)
          _arguments -A "-*" \
-            '(--paths --built)--help[show this help message and exit]' \
+            '(--paths --built --verbose )'{-h,--help}'[show this help message and exit]' \
             '--paths[Show the file paths]' \
-            '--built=-[Show the built rpms]' \
-            '*:buildroot-id:' \
+            '--built[Show the built rpms]' \
+            '--verbose[Show more information]' \
+            '*: buildroot-id' \
             && ret=0
-         ;;
+            ;;
+       (list-builds)
+         _arguments -A "-*" \
+            '(--package --buildid --before --after --state --type --prefix --owner --volume --sort-key --reverse --quiet )'{-h,--help}'[show this help message and exit]' \
+            '--package=-[List builds for this package]' \
+            '--buildid=-[List specific build from ID or nvr]' \
+            '--before=-[List builds built before this time]' \
+            '--after=-[List builds built after this time]' \
+            '--state=-[List builds in this state]' \
+            '--type=-[List builds of this type.]' \
+            '--prefix=-[Only list packages starting with this prefix]' \
+            '--owner=-[List builds built by this owner]' \
+            '--volume=-[List builds by volume ID]' \
+            '--sort-key=-[Sort the list by the named field]' \
+            '--reverse[Print the list in reverse order]' \
+            '--quiet[Do not print the header information]' \
+            '*:' \
+            && ret=0
+            ;;
+       (list-channels)
+         _arguments -A "-*" \
+            '(--simple --quiet )'{-h,--help}'[show this help message and exit]' \
+            '--simple[Print just list of channels without additional info]' \
+            '--quiet[Do not print header information]' \
+            '*: ' \
+            && ret=0
+            ;;
        (list-external-repos)
          _arguments -A "-*" \
-            '(--url --event --ts --repo --name --id --tag --used --inherit)--help[show this help message and exit]' \
-            '(--name --id --tag)--url=-[Select by url]' \
-            '(--url --id --tag)--name=-[Select by name]' \
-            '(--url --name --tag--id=-[Select by id]' \
-            '(--url --name --id)--tag=-[Select by tag]' \
+            '(--url --name --id --tag --used --inherit --event --ts --repo --quiet )'{-h,--help}'[show this help message and exit]' \
+            '--url=-[Select by url]' \
+            '--name=-[Select by name]' \
+            '--id=-[Select by id]' \
+            '--tag=-[Select by tag]' \
             '--used[List which tags use the repo(s)]' \
             '--inherit[Follow tag inheritance when selecting by tag]' \
-            '(--ts --repo)--event=-[query at event]:Specify event' \
-            '(--event --repo)--ts=-[query at timestamp]:Specify timestamp' \
-            '(--ts --event)--repo=-[query at event corresponding to (nonexternal) repo]:Specify repository' \
+            '--event=-[Query at event]' \
+            '--ts=-[Query at timestamp]' \
+            '--repo=-[Query at event corresponding to (nonexternal) repo]' \
             '--quiet[Do not display the column headers]' \
+            '*:' \
             && ret=0
-         ;;
-       # list-groups - no arguments
+            ;;
+       (list-groups)
+         _arguments -A "-*" \
+            '(--event --ts --repo --show-blocked )'{-h,--help}'[show this help message and exit]' \
+            '--event=-[query at event]' \
+            '--ts=-[query at timestamp]' \
+            '--repo=-[query at event for a repo]' \
+            '--show-blocked[Show blocked packages]' \
+            '*: <tag> [group]' \
+            && ret=0
+            ;;
        (list-history)
          _arguments -A "-*" \
-            '(--debug --build --package --tag --editor --user --permision --external --build\-target --group --before --after --before\-event --after\-event --context --show --verbose --all)'{-h,--help}'[show this help message and exit]' \
-            '--debug' \
-            '--build=-[Only show data for a specific build]' \
-            '--package=-[Only show data for a specific package]' \
-            '--tag=-[Only show data for a specific tag]' \
-            {--editor=-,--by=-}'[Only show entries modified by user]' \
-            '--user=-[Only show entries affecting a user]' \
-            '--permission=-[Only show entries relating to a given permission]' \
-            {--erepo,--external-repo=-}'[External repo]' \
-            {--build-target=-,--target=-}'[Only show entries relating to a given build target]' \
-            '--group=-[Only show entries relating to a given group]' \
-            '--before=-[Only show entries before timestamp]' \
-            '--after=-[Only show entries after timestamp]' \
-            '--before-event=-[Only show entries before event]' \
-            '--after-event=[Only show entries after event]' \
-            '--context[Show related entries]' \
-            {-s ,--show=-}'[Show data from selected tables]' \
-            {-v,--verbose}'[Show more detail]' \
-            {-e,--events}'[Show event ids]' \
-            '--all[Allows listing the entire global history]' \
+            '(--debug --build --package --tag --editor --by --user --permission --cg --external-repo --erepo --build-target --target --group --host --channel --before --after --before-event --after-event --watch --active --revoked --context --show --verbose --events --all )'{-h,--help}'[show this help message and exit]' \
+            --debug[]' \             
+            --build=-[Only show data for a specific build]' \
+            --package=-[Only show data for a specific package]' \
+            --tag=-[Only show data for a specific tag]' \
+            --editor=-[Only show entries modified by user]' \
+            --by=-[Only show entries modified by user]' \
+            --user=[Only show entries affecting a user]' \
+            --permission=-[Only show entries relating to a given permission]' \
+            --cg=[Only show entries relating to a given permission]' \
+            --external-repo=-[Only show entries relating to a given external repo]' \
+            --erepo=-[Only show entries relating to a given external repo]' \
+            --build-target=-[Only show entries relating to a given build target]' \
+            --target=-[Only show entries relating to a given build target]' \
+            --group=-[Only show entries relating to a given group]' \
+            --host=-[Only show entries related to given host]' \
+            --channel=-[Only show entries related to given channel]' \
+            --before=-[Only show entries before timestamp]' \
+            --after=-[Only show entries after timestamp]' \
+            --before-event=-[Only show entries before event]' \
+            --after-event=-[Only show entries after event]' \
+            --watch[Monitor history data]' \
+            --active[Only show entries that are currently active]' \
+            --revoked[Only show entries that are currently revoked]' \
+            --context[Show related entries]' \
+            --show=-[Show data from selected tables]' \
+            --verbose[Show more detail]' \
+            --events[Show event ids]' \
+            --all[Allows listing the entire global history]' \
+            '*:' \
             && ret=0
             ;;
        (list-hosts)
          _arguments -A "-*" \
-            '(--arch --channel--ready --not\-ready --enabled --not\-enabled --quiet)'{-h,--help}'[show this help message and exit]' \
+            '(--arch --channel --ready --not-ready --enabled --not-enabled --quiet --show-channels )'{-h,--help}'[show this help message and exit]' \
             '--arch=-[Specify an architecture]' \
             '--channel=-[Specify a channel]' \
             '--ready[Limit to ready hosts]' \
@@ -232,293 +1084,305 @@ _brew-koji() {
             '--enabled[Limit to enabled hosts]' \
             '--not-enabled[Limit to not enabled hosts]' \
             '--quiet[Do not print header information]' \
+            '--show-channels[Show host's channels]' \
+            '*:' \
+            && ret=0
+            ;;
+       (list-permissions)
+         _arguments -A "-*" \
+            '(--user --mine )'{-h,--help}'[show this help message and exit]' \
+            '--user=-[List permissions for the given user]' \
+            '--mine[List your permissions]' \
+            '*:' \
             && ret=0
             ;;
        (list-pkgs)
          _arguments -A "-*" \
-            '(--owner --tag --package --quiet --noinherit --show\-blocked --show\-dups --event --ts --repo)'{-h,--help}'[show this help message and exit]' \
+            '(--owner --tag --package --quiet --noinherit --show-blocked --show-dups --event --ts --repo )'{-h,--help}'[show this help message and exit]' \
             '--owner=-[Specify owner]' \
             '--tag=-[Specify tag]' \
             '--package=-[Specify package]' \
             '--quiet[Do not print header information]' \
-            '--noinherit[Dont follow inheritance]' \
+            "--noinherit[Don't follow inheritance]" \
             '--show-blocked[Show blocked packages]' \
             '--show-dups[Show superseded owners]' \
             '--event=-[query at event]' \
             '--ts=-[query at timestamp]' \
             '--repo=-[query at event for a repo]' \
+            '*:' \
             && ret=0
             ;;
        (list-tag-history)
          _arguments -A "-*" \
-            '(--debug --build --package --tag --all)'{-h,--help}'[show this help message and exit]' \
-            '--debug' \
+            '(--debug --build --package --tag --all )'{-h,--help}'[show this help message and exit]' \
+            '--debug[]' \
             '--build=-[Only show data for a specific build]' \
             '--package=-[Only show data for a specific package]' \
             '--tag=-[Only show data for a specific tag]' \
             '--all[Allows listing the entire global history]' \
+            '*:' \
             && ret=0
             ;;
-
        (list-tag-inheritance)
-         _arguments -A "-*" \
-            '(--jump --event --ts --repo --reverse)--help[show this help message and exit]' \
-            '--reverse[Process tags children instead of its parents]' \
-            '(--jump --event --ts --repo)--stop=-[Stop processing inheritance at this tag]:Specify tag' \
-            '(--stop --event --ts --repo)--jump=-[Jump from one tag to another when processing inheritance]:Specify tag' \
-            '(--jump --stop --ts --repo)--event=-[query at event]:Specify event' \
-            '(--jump --stop --event --repo)--ts=-[query at timestamp]:Specify timestamp' \
-            '(--jump --stop --ts --event)--repo=-[query at event for a repo]:Specify repository' \
-            '*:<tag>:' \
-            && ret=0
-         ;;
+      _arguments -A "-*" \
+         '(--reverse --stop --jump --event --ts --repo )'{-h,--help}'[show this help message and exit]' \
+         '--reverse[Process tag's children instead of its parents]' \
+         '--stop=-[Stop processing inheritance at this tag]' \
+         '--jump=-[Jump from one tag to another when processing inheritance]' \
+         '--event=-[query at event]' \
+         '--ts=-[query at timestamp]' \
+         '--repo=-[query at event for a repo]' \
+         '*: <tag>' \
+         && ret=0
+      ;;
        (list-tagged)
          _arguments -A "-*" \
-            '(--arch --rpms --inherit --latest --latest --quiet --path --sigs --type --event --ts --repo)--help[show this help message and exit]' \
+            '(--arch --rpms --inherit --latest --latest-n --quiet --paths --sigs --type --event --ts --repo )'{-h,--help}'[show this help message and exit]' \
             '--arch=-[List rpms for this arch]' \
             '--rpms[Show rpms instead of builds]' \
             '--inherit[Follow inheritance]' \
             '--latest[Only show the latest builds/rpms]' \
+            '--latest-n=-[Only show the latest N builds/rpms]' \
             '--quiet[Do not print the header information]' \
             '--paths[Show the file paths]' \
             '--sigs[Show signatures]' \
-            '--type=-[Show builds of the given type only. Currently supported types: maven]' \
+            '--type=-[Show builds of the given type only.  Currently supported types: maven, win, image]' \
             '--event=-[query at event]' \
             '--ts=-[query at timestamp]' \
             '--repo=-[query at event for a repo]' \
-             '*:tag package:' \
-           && ret=0
-         ;;
+            '*: tag [package]' \
+            && ret=0
+            ;;
        (list-tags)
          _arguments -A "-*" \
-            '(--show\-id --verbose --unlocked --build --package)'{-h,--help}'[show this help message and exit]' \
+            '(--show-id --verbose --unlocked --build --package )'{-h,--help}'[show this help message and exit]' \
             '--show-id[Show tag ids]' \
             '--verbose[Show more information]' \
             '--unlocked[Only show unlocked tags]' \
             '--build=-[Show tags associated with a build]' \
             '--package=-[Show tags associated with a package]' \
+            '*: [pattern]' \
             && ret=0
-         ;;
+            ;;
        (list-targets)
          _arguments -A "-*" \
-            '(--name --quiet)'{-h,--help}'[show this help message and exit]' \
+            '(--name --quiet )'{-h,--help}'[show this help message and exit]' \
             '--name=-[Specify the build target name]' \
             '--quiet[Do not print the header information]' \
+            '*:' \
             && ret=0
-         ;;
+            ;;
        (list-tasks)
          _arguments -A "-*" \
-            '(--mine --quiet)'{-h,--help}'[show this help message and exit]' \
+            '(--mine --user --arch --method --channel --host --quiet )'{-h,--help}'[show this help message and exit]' \
             '--mine[Just print your tasks]' \
+            '--user=-[Only tasks for this user]' \
+            '--arch=-[Only tasks for this architecture]' \
+            '--method=-[Only tasks of this method]' \
+            '--channel=-[Only tasks in this channel]' \
+            '--host=-[Only tasks for this host]' \
             '--quiet[Do not display the column headers]' \
-         && ret=0
-         ;;
+            '*:' \
+            && ret=0
+            ;;
        (list-untagged)
          _arguments -A "-*" \
-            '(--paths --show\-references)'{-h,--help}'[show this help message and exit]' \
+            '(--paths --show-references )'{-h,--help}'[show this help message and exit]' \
             '--paths[Show the file paths]' \
             '--show-references[Show build references]' \
+            '*: [package]' \
             && ret=0
-         ;;
-       (maven-build)
-         _arguments -s -A "-*" \
-            (--patches --profile --jvm-option --maven-option --debug --specfile --skip\-tag --scratch --nowait --noprogress --background){--help,-h}'[show this help message and exit]' \
-            '--patches=-[SCM URL of a directory containing patches to apply to the sources before building]:URL' \
-            {-P,--profile=-}'[Enable a profile for the Maven build]:Profile name' \
-            {-D,--property=-}'[Pass a system property to the Maven build]:<name>=<value>' \
-            {-J,--jvm-option=-}'[Pass a command-line option to the JVM]:JVM Option' \
-            {-M,--maven-option=-}'[Pass a command-line option to Maven]:Maven Option' \
-            '--debug[Run Maven build in debug mode]' \
-            '--specfile=-[SCM URL of a spec file fragment to use to generate]' \
-            '--skip-tag[Do not attempt to tag package]' \
-            '--scratch[Perform a scratch build]' \
-            '--nowait[Dont wait on build]' \
-            '--noprogress[Do not display progress of the upload]' \
-            '--background[Run the build at a lower priority]' \
-            '*:target URL:' \
+            ;;
+       (list-volumes)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*:' \
             && ret=0
-         ;;
-       (maven-chain)
-         _arguments -s -A "-*" \
-            (--skip-tag --scratch --debug --force --nowait --background){--help,-h}'[show this help message and exit]' \
-            '--skip-tag[Do not attempt to tag builds]' \
-            '--scratch[Perform a scratch build]' \
-            '--debug[Run Maven build in debug mode]' \
-            '--force[Force rebuilds of all packages]' \
-            '--nowait[Dont wait on build]' \
-            '--background[Run the build at a lower priority]' \
-            '*:target URL:' \
-            && ret=0
-         ;;
+            ;;
        (mock-config)
          _arguments -A "-*" \
-            '(--arch --tag --task --buildroot --mockdir --topdir --topurl --distribution -o)--help[show this help message and exit]' \
+            '(--arch --name --tag --target --task --latest --buildroot --mockdir --topdir --topurl --distribution --yum-proxy -o)'{-h,--help}'[show this help message and exit]' \
             '--arch=-[Specify the arch]' \
+            '--name=-[Specify the name for the buildroot]' \
             '--tag=-[Create a mock config for a tag]' \
+            '--target=-[Create a mock config for a build target]' \
             '--task=-[Duplicate the mock config of a previous task]' \
-            '--buildroot=-[Duplicate the mock config for the specified buildroot]' \
+            '--latest[use the latest redirect url]' \
+            '--buildroot=-[Duplicate the mock config for the specified buildroot id]' \
             '--mockdir=-[Specify mockdir]' \
             '--topdir=-[Specify topdir]' \
-            '--topurl=-[url under which Koji files are accessible]' \
+            '--topurl=-[URL under which Koji files are accessible]' \
             '--distribution=-[Change the distribution macro]' \
-            '-o+[Output to a file]:Filename' \
-            '*:name:' \
+            '--yum-proxy=-[Specify a yum proxy]' \
+            '-o[Output to a file]' \
+            '*:' \
             && ret=0
-         ;;
-       (moshimoshi)
-         _arguments -A "-*" \
-            '(--help[show this help message and exit]' \
-            && ret=0
-       (move-pkg)
-         _arguments -A "-*" \
-            '(--force --nowait --quiet)--help[show this help message and exit]' \
-            '--force[force operation]' \
-            '--nowait[do not wait on tasks]' \
-            '--all[move all instances of a package, <pkg>s are package names]' \
-            '*:<tag1> <tag2> <pkg> [<pkg>...]:' \
-            && ret=0
-         ;;
-       (resubmit)
-         _arguments -A "-*" \
-            '(--nowait --nowatch --quiet)--help[show this help message and exit]' \
-            '--nowait[Dont wait on task]' \
-            '--nowatch[An alias for --nowait]' \
-            '--quiet[Do not print the task information]' \
-            '*:<taskID>:' \
-            && ret=0
-         ;;
+            ;;
        (rpminfo)
          _arguments -A "-*" \
-            '*:<n-v-r.a> [<n-v-r.a>...]:' \
+            '(--buildroots )'{-h,--help}'[show this help message and exit]' \
+            '--buildroots[show buildroots the rpm was used in]' \
+            '*: <n-v-r.a> [<n-v-r.a> ...]' \
             && ret=0
-         ;;
-       (search)
-         _arguments -A "-*" \
-            '(--regex --exact)--help[show this help message and exit]' \
-            '--regex[treat pattern as regex]' \
-            '--exact[exact matches only]' \
-            '*:search_type pattern (where search_type is one of package, build, tag, target, user, host, rpm):' \
-            && ret=0
-         ;;
+            ;;
        (show-groups)
          _arguments -A "-*" \
-            '(--comps --expand --spec)--help[show this help message and exit]' \
+            '(--comps --expand --spec --show-blocked )'{-h,--help}'[show this help message and exit]' \
             '--comps[Print in comps format]' \
             '--expand[Expand groups in comps format]' \
             '--spec[Print build spec]' \
-            '*:<tag>:' \
+            '--show-blocked[Show blocked packages]' \
+            '*: <tag>' \
             && ret=0
-         ;;
-       (tag-pkg)
-         _arguments -A "-*" \
-            '(--force --nowait)--help[show this help message and exit]' \
-            '--force[force operation]' \
-            '--nowait[Do not wait on task]' \
-            '*:<tag> <pkg> [<pkg>...]:' \
-            && ret=0
-         ;;
-       (tag-build)
-         _arguments -A "-*" \
-            '(--force --nowait)--help[show this help message and exit]' \
-            '--force[force operation]' \
-            '--nowait[Do not wait on task]' \
-            '*:<tag> <pkg> [<pkg>...]:' \
-            && ret=0
-         ;;
+            ;;
        (taginfo)
          _arguments -A "-*" \
-            '*:<tag> [<tag>...]:' \
+            '(--event --ts --repo )'{-h,--help}'[show this help message and exit]' \
+            '--event=-[query at event]' \
+            '--ts=-[query at timestamp]' \
+            '--repo=-[query at event for a repo]' \
+            '*: <tag> [<tag> ...]' \
             && ret=0
-         ;;
+            ;;
        (taskinfo)
          _arguments -A "-*" \
-            '(--recurse --verbose)--help[show this help message and exit]' \
+            '(--recurse --verbose )'{-h,--help}'[show this help message and exit]' \
             '--recurse[Show children of this task as well]' \
             '--verbose[Be verbose]' \
-            '*:taskID [taskID...]:' \
+            '*: taskID [taskID...]' \
             && ret=0
-         ;;
-       (untag-build)
+            ;;
+       (call)
          _arguments -A "-*" \
-            '(--all --non\-latest --test --verbose --force)--help[show this help message and exit]' \
-            '--all[untag all versions of the package in this tag]' \
-            '--non-latest[untag all versions of the package in this tag except the latest]' \
-            '--test[test mode]' \
-            '--verbose[print details]' \
-            '--force[force operation]' \
-            '*:<tag> <pkg> [<pkg>...]:' \
+            '(--python --kwargs --json-output )'{-h,--help}'[show this help message and exit]' \
+            '--python[Use python syntax for values]' \
+            '--kwargs=-[Specify keyword arguments as a dictionary (implies--python)]' \
+            '--json-output[Use JSON syntax for output]' \
+            '*: name [arg...]' \
             && ret=0
-         ;;
-       (untag-pkg)
+            ;;
+       (dist-repo)
          _arguments -A "-*" \
-            '(--all --non\-latest --test --verbose --force)--help[show this help message and exit]' \
-            '--all[untag all versions of the package in this tag]' \
-            '--non-latest[untag all versions of the package in this tag except the latest]' \
-            '--test[test mode]' \
-            '--verbose[print details]' \
-            '--force[force operation]' \
-            '*:<tag> <pkg> [<pkg>...]:' \
+            '(--allow-missing-signatures --arch --with-src --split-debuginfo --comps --delta-rpms --event --volume --non-latest --multilib --noinherit --nowait --skip-missing-signatures )'{-h,--help}'[show this help message and exit]' \
+            '--allow-missing-signatures[For RPMs not signed with a desired key, fall back to the primary copy]' \
+            '--arch=-[Indicate an architecture to consider. The default is all architectures associated with the given tag. This option may be specified multiple times.]' \
+            '--with-src[Also generate a src repo]' \
+            '--split-debuginfo[Split debuginfo info a separate repo for each arch]' \
+            '--comps=-[Include a comps file in the repodata]' \
+            '--delta-rpms=-[Create delta rpms. REPO can be the id of another dist epo or the name of a tag that has a dist repo. May be specified multiple times.]' \
+            '--event=-[Use tag content at event]' \
+            '--volume=-[Generate repo on given volume]' \
+            '--non-latest[Include older builds, not just the latest]' \
+            '--multilib=-[Include multilib packages in the repository using the]' \
+            '--noinherit[Do not consider tag inheritance]' \
+            '--nowait[Do not wait for the task to complete]' \
+            '--skip-missing-signatures[Skip RPMs not signed with the desired key(s)]' \
+            '*: tag keyID [keyID...]' \
             && ret=0
-         ;;
+            ;;
+       (import-comps)
+         _arguments -A "-*" \
+            '(--force )'{-h,--help}'[show this help message and exit]' \
+            '--force[force import]' \
+            '*: <file> <tag>' \
+            && ret=0
+            ;;
+       (moshimoshi)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*:' \
+            && ret=0
+            ;;
+       (add-notification)
+         _arguments -A "-*" \
+            '(--user --package --tag --success-only )'{-h,--help}'[show this help message and exit]' \
+            '--user=-[Add notifications for this user (admin-only)]' \
+            '--package=-[Add notifications for this package]' \
+            '--tag=-[Add notifications for this tag]' \
+            '--success-only[]' \
+            '*:' \
+            && ret=0
+            ;;
+       (block-notification)
+         _arguments -A "-*" \
+            '(--user --package --tag --all )'{-h,--help}'[show this help message and exit]' \
+            '--user=-[Block notifications for this user (admin-only)]' \
+            '--package=-[Block notifications for this package]' \
+            '--tag=-[Block notifications for this tag]' \
+            '--all[Block all notification for this user]' \
+            '*:' \
+            && ret=0
+            ;;
+       (edit-notification)
+         _arguments -A "-*" \
+            '(--package --tag --success-only --no-success-only )'{-h,--help}'[show this help message and exit]' \
+            '--package=-[Notifications for this package, '*' for all]' \
+            '--tag=-[Notifications for this tag, '*' for all]' \
+            '--success-only[Notify only on successful events]' \
+            '--no-success-only[Notify on all events]' \
+            '*: ID' \
+            && ret=0
+            ;;
+       (list-notifications)
+         _arguments -A "-*" \
+            '(--mine --user )'{-h,--help}'[show this help message and exit]' \
+            '--mine[Just print your notifications]' \
+            '--user=-[Only notifications for this user]' \
+            '*:' \
+            && ret=0
+            ;;
+       (remove-notification)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*: ID [ID2, ...]' \
+            && ret=0
+            ;;
+       (unblock-notification)
+         _arguments -A "-*" \
+            '()'{-h,--help}'[show this help message and exit]' \
+            '*: ID [ID2, ...]' \
+            && ret=0
+            ;;
        (wait-repo)
          _arguments -A "-*" \
-            '(--build --target --timeout --quiet)--help[show this help message and exit]' \
-            '--build=-[Check that the given build (or a later build of the same package) is in the newly-generated repo (may be used multiple times)]' \
+            '(--build --target --timeout --quiet )'{-h,--help}'[show this help message and exit]' \
+            '--build=-[Check that the given build is in the newly-generated repo (may be used multiple times)]' \
             '--target[Interpret the argument as a build target name]' \
             '--timeout=-[Amount of time to wait (in minutes) before giving up (default: 120)]' \
             '--quiet[Suppress output, success or failure will be indicated by the return value only]' \
-            '*:<tag>:' \
+            '*: <tag>' \
             && ret=0
-         ;;
+            ;;
        (watch-logs)
          _arguments -A "-*" \
-            '(--log)--help[show this help message and exit]' \
+            '(--log --mine --follow )'{-h,--help}'[show this help message and exit]' \
             '--log=-[Watch only a specific log]' \
-            '*:<task id> [<task id>...]:' \
+            '--mine[Watch logs for all your tasks, task_id arguments are forbidden in this case.]' \
+            '--follow[Follow spawned child tasks]' \
+            '*: <task id> [<task id>...]' \
             && ret=0
-         ;;
+            ;;
        (watch-task)
          _arguments -A "-*" \
-            '(--quiet)--help[show this help message and exit]' \
+            '(--quiet --mine --user --arch --method --channel --host )'{-h,--help}'[show this help message and exit]' \
             '--quiet[Do not print the task information]' \
-            '*:<task id> [<task id>...]:' \
+            '--mine[Just watch your tasks]' \
+            '--user=-[Only tasks for this user]' \
+            '--arch=-[Only tasks for this architecture]' \
+            '--method=-[Only tasks of this method]' \
+            '--channel=-[Only tasks in this channel]' \
+            '--host=-[Only tasks for this host]' \
+            '*: <task id> [<task id>...]' \
             && ret=0
-         ;;
-       (win-build)
+            ;;
+       (search)
          _arguments -A "-*" \
-            '(--winspec --patches --cpus --mem --specfile --scratch --repo-id --skip-tag --background --wait --nowait --quiet)--help[show this help message and exit]' \
-            '--winspec=-[SCM URL to retrieve the build descriptor from. If not]' \
-            '--patches=-[SCM URL of a directory containing patches to apply to the]' \
-            '--cpus=-[Number of cpus to allocate to the build VM (requires]' \
-            '--mem=-[Amount of memory (in megabytes) to allocate to the build]' \
-            '--specfile=-[SCM URL of a spec file fragment to use to generate]' \
-            '--scratch[Perform a scratch build]' \
-            '--repo-id=-[Use a specific repo]' \
-            '--skip-tag[Do not attempt to tag package]' \
-            '--background[Run the build at a lower priority]' \
-            '--wait[Wait on the build, even if running in the background]' \
-            '--nowait[Dont wait on build]' \
-            '--quiet[Do not print the task information]' \
-            '*:target URL VM:' \
+            '(--regex --exact )'{-h,--help}'[show this help message and exit]' \
+            '--regex[treat pattern as regex]' \
+            '--exact[exact matches only]' \
+            '*: search_type pattern' \
             && ret=0
-         ;;
-       (wrapper-rpm)
-         _arguments -A "-*" \
-            '(--scratch --nowait --background)--help[show this help message and exit]' \
-            '--scratch[Perform a scratch build]' \
-            '--nowait[Dont wait on build]' \
-            '--background[Run the build at a lower priority]' \
-            '*:<signature-key> n-v-r [n-v-r...]:' \
-            && ret=0
-         ;;
-       (write-signed-rpm)
-         _arguments -A "-*" \
-            '(--all --buildid)--help[show this help message and exit]' \
-            '--all[Write out all RPMs signed with this key]' \
-            '--buildid=-[Specify a build id rather than an n-v-r]' \
-            '*:<signature-key> n-v-r [n-v-r...]:' \
-            && ret=0
-         ;;
+            ;;
       esac
       ;;
    esac
